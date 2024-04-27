@@ -4,6 +4,8 @@ using namespace std;
 
 int main() {
 	srand((unsigned int)time(NULL));
+	
+	cout << "Huy dep trai vkl" << endl;
 
 	GameBoard* board = new GameBoard();
 
