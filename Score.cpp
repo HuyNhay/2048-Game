@@ -1,0 +1,17 @@
+#include "GameLibrary.h"
+
+void displayScore(GameBoard* board) {
+	cout << COLOR_GREEN << "SCORE:   " << board->score << COLOR_RESET << endl;
+	cout << COLOR_YELLOW << "BEST:    " << board->bestScore << COLOR_RESET << endl;
+}
+
+void maximize(int& target, const int& cand) {
+	if (target >= cand) return;
+	target = cand;
+}
+
+void updateScore(GameBoard* board, const int& value) {
+	board->score += value;
+	maximize(board->bestScore, board->score);
+}
+
