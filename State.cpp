@@ -2,6 +2,8 @@
 
 States::States() {}
 
+States::~States() {}
+
 GameBoard* copyState(GameBoard* board) {
 	GameBoard* copyBoard = new GameBoard;
 
@@ -20,18 +22,18 @@ GameBoard* copyState(GameBoard* board) {
 	return copyBoard;
 }
 
-void pushState(stack<GameBoard*>& states, GameBoard* board) {
+void pushState(Stack<GameBoard*>& states, GameBoard* board) {
 	states.push(copyState(board));
 }
 
-void popState(stack<GameBoard*>& states) {
+void popState(Stack<GameBoard*>& states) {
 	GameBoard* board = states.top();
 	states.pop();
 	deallocateGameBoard(board);
 }
 
-void clearStates(stack<GameBoard*>& states) {
-	while (states.size()) {
+void clearStates(Stack<GameBoard*>& states) {
+	while (states.getSize()) {
 		popState(states);
 	}
 }

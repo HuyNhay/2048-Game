@@ -385,7 +385,7 @@ void processChangeDimension(GameBoard* board, States* states) {
 }
 
 void processUndo(GameBoard*& board, States* states) {
-	if (states->prev.empty()) return;
+	if (states->prev.isEmpty()) return;
 
 	states->next.push(board);
 
@@ -396,7 +396,7 @@ void processUndo(GameBoard*& board, States* states) {
 }
 
 void processRedo(GameBoard*& board, States* states) {
-	if (states->next.empty()) return;
+	if (states->next.isEmpty()) return;
 
 	states->prev.push(board);
 

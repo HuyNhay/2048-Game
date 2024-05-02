@@ -1,10 +1,12 @@
 #include "GameLibrary.h"
+//#include "Stack.cpp"
+//#include "LinkedList.cpp"
 
 using namespace std;
 
 int main() {
 	srand((unsigned int)time(NULL));
-	
+
 	GameBoard* board = new GameBoard();
 
 	States* states = new States();

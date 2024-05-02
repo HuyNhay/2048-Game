@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#include <stack>
 
 #define LONG_TAB "\t\t\t       "
 
@@ -137,11 +136,103 @@ struct GameBoard {
 	GameBoard();
 };
 
+template <typename T>
+struct Node {
+	T data;
+	Node<T>* next;
+
+	Node() {
+		next = nullptr;
+	}
+
+	Node(T _data) {
+		data = _data;
+		next = nullptr;
+	}
+
+	~Node() {
+		next = nullptr;
+	}
+};
+
+template <typename T>
+struct List {
+	Node<T>* head;
+	int size;
+
+	List() {
+		head = nullptr;
+		size = 0;
+	}
+
+	~List() {
+		while (head != nullptr) {
+			removeHead();
+		}
+	}
+
+	void addHead(Node<T>* node) {
+		if (head == nullptr) {
+			head = node;
+			size++;
+			return;
+		}
+
+		node->next = head;
+		head = node;
+		size++;
+	}
+
+	void removeHead() {
+		if (head == nullptr) return;
+
+		Node<T>* node = head;
+		head = head->next;
+		size--;
+		delete node;
+	}
+};
+
+template <typename T>
+struct Stack {
+	List<T>* st;
+
+	Stack() {
+		st = new List<T>();
+	}
+
+	~Stack() {
+		delete st;
+	}
+
+	void push(T item) {
+		st->addHead(new Node<T>(item));
+	}
+
+	T top() {
+		return (*st->head).data;
+	}
+
+	void pop() {
+		st->removeHead();
+	}
+
+	int getSize() {
+		return st->size;
+	}
+
+	bool isEmpty() {
+		return (st->size == 0);
+	}
+};
+
 struct States {
-	stack<GameBoard*> prev;
-	stack<GameBoard*> next;
+	Stack<GameBoard*> prev;
+	Stack<GameBoard*> next;
 
 	States();
+
+	~States();
 };
 
 void addRandomTile(GameBoard*);
@@ -200,8 +291,8 @@ void maximize(int&, const int&);
 
 GameBoard* copyState(GameBoard*);
 
-void pushState(stack<GameBoard*>&, GameBoard*);
+void pushState(Stack<GameBoard*>&, GameBoard*);
 
-void popState(stack<GameBoard*>&);
+void popState(Stack<GameBoard*>&);
 
-void clearStates(stack<GameBoard*>&);
+void clearStates(Stack<GameBoard*>&);
