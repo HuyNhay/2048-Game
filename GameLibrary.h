@@ -141,18 +141,11 @@ struct Node {
 	T data;
 	Node<T>* next;
 
-	Node() {
-		next = nullptr;
-	}
+	Node();
 
-	Node(T _data) {
-		data = _data;
-		next = nullptr;
-	}
+	Node(T);
 
-	~Node() {
-		next = nullptr;
-	}
+	~Node();
 };
 
 template <typename T>
@@ -160,70 +153,32 @@ struct List {
 	Node<T>* head;
 	int size;
 
-	List() {
-		head = nullptr;
-		size = 0;
-	}
+	List();
 
-	~List() {
-		while (head != nullptr) {
-			removeHead();
-		}
-	}
+	~List();
 
-	void addHead(Node<T>* node) {
-		if (head == nullptr) {
-			head = node;
-			size++;
-			return;
-		}
+	void addHead(Node<T>*);
 
-		node->next = head;
-		head = node;
-		size++;
-	}
-
-	void removeHead() {
-		if (head == nullptr) return;
-
-		Node<T>* node = head;
-		head = head->next;
-		size--;
-		delete node;
-	}
+	void removeHead();
 };
 
 template <typename T>
 struct Stack {
 	List<T>* st;
 
-	Stack() {
-		st = new List<T>();
-	}
+	Stack();
 
-	~Stack() {
-		delete st;
-	}
+	~Stack();
 
-	void push(T item) {
-		st->addHead(new Node<T>(item));
-	}
+	void push(T);
 
-	T top() {
-		return (*st->head).data;
-	}
+	T top();
 
-	void pop() {
-		st->removeHead();
-	}
+	void pop();
 
-	int getSize() {
-		return st->size;
-	}
+	int getSize();
 
-	bool isEmpty() {
-		return (st->size == 0);
-	}
+	bool isEmpty();
 };
 
 struct States {

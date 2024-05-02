@@ -132,9 +132,11 @@
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="GameProcess.cpp" />
     <ClCompile Include="InitGame.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RandomTile.cpp" />
     <ClCompile Include="Score.cpp" />
+    <ClCompile Include="Stack.cpp" />
     <ClCompile Include="State.cpp" />
   </ItemGroup>
   <ItemGroup>
