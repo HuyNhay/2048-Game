@@ -35,4 +35,4 @@ bool Stack<T>::isEmpty() {
 	return (st->size == 0);
 }
 
-template struct Stack<GameBoard*>;
+template struct Stack<GameBoard*>; // explicit instantiate

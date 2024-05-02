@@ -16,7 +16,7 @@ Node<T>::~Node() {
 	next = nullptr;
 }
 
-template struct Node<GameBoard*>;
+template struct Node<GameBoard*>; // explicit instantiate
 
 template <typename T>
 List<T>::List() {
@@ -54,4 +54,4 @@ void List<T>::removeHead() {
 	delete node;
 }
 
-template struct List<GameBoard*>;
+template struct List<GameBoard*>; // explicit instantiate
