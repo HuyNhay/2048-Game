@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
-#include <string>
 #include <conio.h>
 
 #define LONG_TAB "\t\t\t       "
