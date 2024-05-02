@@ -35,6 +35,8 @@ bool availableMove(GameBoard* board) {
 }
 
 void processVictory(GameBoard*& board, States* states) {
+	displayGame(board);
+
 	cout << "-------- VICTORY --------" << endl;
 	cout << "Congratulations! You have reached " << POW2[WIN_VALUE] << "!" << endl;
 	cout << "New game: " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
@@ -58,8 +60,9 @@ void processVictory(GameBoard*& board, States* states) {
 }
 
 void processGameOver(GameBoard*& board, States* states) {
+	displayGame(board);
+
 	cout << "-------- GAME OVER --------" << endl;
-	cout << "You lose :(((" << endl;
 	cout << "New game: " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
 	cout << "Exit:     " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
 	cout << "Undo:     " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
@@ -132,6 +135,9 @@ void processUp(GameBoard* board, States* states) {
 		clearStates(states->next);
 	}
 	else { // if not
+		displayGame(board);
+		cout << "Unable to move up!" << endl;
+
 		popState(states->prev);
 	}
 }
@@ -186,6 +192,9 @@ void processDown(GameBoard* board, States* states) {
 		clearStates(states->next);
 	}
 	else { // if not
+		displayGame(board);
+		cout << "Unable to move down!" << endl;
+
 		popState(states->prev);
 	}
 }
@@ -240,6 +249,9 @@ void processLeft(GameBoard* board, States* states) {
 		clearStates(states->next);
 	}
 	else { // if not
+		displayGame(board);
+		cout << "Unable to move left!" << endl;
+
 		popState(states->prev);
 	}
 }
@@ -294,11 +306,16 @@ void processRight(GameBoard* board, States* states) {
 		clearStates(states->next);
 	}
 	else { // if not
+		displayGame(board);
+		cout << "Unable to move right!" << endl;
+
 		popState(states->prev);
 	}
 }
 
 void processNewGame(GameBoard* board, States* states) {
+	displayGame(board);
+
 	cout << "Do you want to start a new game? All progress will be lost." << endl;
 	cout << "Press " <<
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
@@ -318,6 +335,8 @@ void processNewGame(GameBoard* board, States* states) {
 }
 
 void processQuitGame(GameBoard* board, States* states) {
+	displayGame(board);
+
 	cout << "Do you want to exit the game?" << endl;
 	cout << "Press " <<
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
@@ -339,6 +358,8 @@ void processQuitGame(GameBoard* board, States* states) {
 }
 
 void processChangeDimension(GameBoard* board, States* states) {
+	displayGame(board);
+
 	cout << "Do you want to change dimension?" << endl;
 	cout << "Press " << 
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " << 
@@ -385,7 +406,11 @@ void processChangeDimension(GameBoard* board, States* states) {
 }
 
 void processUndo(GameBoard*& board, States* states) {
-	if (states->prev.isEmpty()) return;
+	if (states->prev.isEmpty()) {
+		displayGame(board);
+		cout << "Unable to undo!" << endl;
+		return;
+	}
 
 	states->next.push(board);
 
@@ -396,7 +421,11 @@ void processUndo(GameBoard*& board, States* states) {
 }
 
 void processRedo(GameBoard*& board, States* states) {
-	if (states->next.isEmpty()) return;
+	if (states->next.isEmpty()) {
+		displayGame(board);
+		cout << "Unable to redo!" << endl;
+		return;
+	}
 
 	states->prev.push(board);
 
