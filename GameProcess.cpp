@@ -53,8 +53,6 @@ void processEnterPlayerName(GameBoard* board, States* states) {
 		}
 		else { // valid name
 			GameBoard::playerName = name;
-			//cout << name << endl;
-			//system("pause");
 			return;
 		}
 	}
@@ -162,7 +160,7 @@ void processUp(GameBoard* board, States* states) {
 	}
 	else { // if not
 		displayGame(board);
-		cout << "Unable to move up!" << endl;
+		cout << COLOR_YELLOW << "Unable to move up!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
@@ -219,7 +217,7 @@ void processDown(GameBoard* board, States* states) {
 	}
 	else { // if not
 		displayGame(board);
-		cout << "Unable to move down!" << endl;
+		cout << COLOR_YELLOW << "Unable to move down!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
@@ -276,7 +274,7 @@ void processLeft(GameBoard* board, States* states) {
 	}
 	else { // if not
 		displayGame(board);
-		cout << "Unable to move left!" << endl;
+		cout << COLOR_YELLOW << "Unable to move left!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
@@ -333,7 +331,7 @@ void processRight(GameBoard* board, States* states) {
 	}
 	else { // if not
 		displayGame(board);
-		cout << "Unable to move right!" << endl;
+		cout << COLOR_YELLOW << "Unable to move right!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
@@ -434,7 +432,7 @@ void processChangeDimension(GameBoard* board, States* states) {
 void processUndo(GameBoard*& board, States* states) {
 	if (states->prev.isEmpty()) {
 		displayGame(board);
-		cout << "Unable to undo!" << endl;
+		cout << COLOR_YELLOW << "Unable to undo!" << COLOR_RESET << endl;
 		return;
 	}
 
@@ -449,7 +447,7 @@ void processUndo(GameBoard*& board, States* states) {
 void processRedo(GameBoard*& board, States* states) {
 	if (states->next.isEmpty()) {
 		displayGame(board);
-		cout << "Unable to redo!" << endl;
+		cout << COLOR_YELLOW << "Unable to redo!" << COLOR_RESET << endl;
 		return;
 	}
 
