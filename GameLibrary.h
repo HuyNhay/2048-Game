@@ -129,7 +129,7 @@ struct GameBoard {
 	int width;
 	int height;
 	int score;
-	int bestScore;
+	static int bestScore;
 	bool isWin;
 
 	GameBoard();

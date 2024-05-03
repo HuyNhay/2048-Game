@@ -2,7 +2,6 @@
 
 void clearMemory(GameBoard* board) {
 	board->score = 0;
-	board->bestScore = 0;
 	board->isWin = 0;
 
 	if (board->grid == nullptr) return;

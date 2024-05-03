@@ -10,7 +10,6 @@ GameBoard* copyState(GameBoard* board) {
 	changeDimension(copyBoard, board->width, board->height);
 
 	copyBoard->score = board->score;
-	copyBoard->bestScore = board->bestScore;
 	copyBoard->isWin = board->isWin;
 
 	for (int i = 0, width = board->width; i < width; i++) {

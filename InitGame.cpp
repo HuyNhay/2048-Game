@@ -5,7 +5,6 @@ GameBoard::GameBoard() {
 	width = 0;
 	height = 0;
 	score = 0;
-	bestScore = 0;
 	isWin = false;
 }
 

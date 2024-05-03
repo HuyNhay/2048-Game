@@ -1,6 +1,4 @@
 #include "GameLibrary.h"
-//#include "Stack.cpp"
-//#include "LinkedList.cpp"
 
 using namespace std;
 
