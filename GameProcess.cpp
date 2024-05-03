@@ -34,6 +34,32 @@ bool availableMove(GameBoard* board) {
 	return false;
 }
 
+void processEnterPlayerName(GameBoard* board, States* states) {
+	cout << LONG_TAB << "\t\t\t" << COLOR_GREEN << "Enter your nickname: " << COLOR_RESET;
+	string name = "";
+	for (int ntry = 3; ntry >= 0; ntry--) {
+		getline(cin, name);
+		if (cin.fail() || (int)name.length() > 20 || (int)name.length() == 0) { // invalid name
+			if (ntry == 0) {
+				cout << endl << COLOR_RED << "Too much wrong attempts, exit game automatically!" << COLOR_RESET;
+				deallocateGame(board, states);
+				exit(0);
+			}
+			cout << COLOR_RED;
+			cout <<  "\t\t\t    " <<
+				"Your nickname is invalid (NOT empty and NOT more than 20 characters) " << endl;
+			cout << LONG_TAB << "\t\t\t" << "Please reenter (" << ntry << " more) : ";
+			cout << COLOR_RESET;
+		}
+		else { // valid name
+			GameBoard::playerName = name;
+			//cout << name << endl;
+			//system("pause");
+			return;
+		}
+	}
+}
+
 void processVictory(GameBoard*& board, States* states) {
 	displayGame(board);
 
@@ -370,25 +396,25 @@ void processChangeDimension(GameBoard* board, States* states) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
 			int w;
-			cout << COLOR_GREEN << "Enter number of rows (MUST be a positive number, recommend in range [2, 8]): " << COLOR_RESET;
+			cout << COLOR_GREEN << "Enter number of rows: " << COLOR_RESET;
 			while (true) {
 				cin >> w;
 				if (cin.fail() || w <= 0) {
 					cin.clear();
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << COLOR_RED << "Your input is not incorrect, please reenter: " << COLOR_RESET;
+					cout << COLOR_RED << "Your input is not incorrect (MUST be a positive number, recommend in range [2, 8]), please reenter: " << COLOR_RESET;
 				}
 				else break;
 			}
 
 			int h;
-			cout << COLOR_GREEN << "Enter number of columns (MUST be a positive number, recommend in range [2, 8]): " << COLOR_RESET;
+			cout << COLOR_GREEN << "Enter number of columns: " << COLOR_RESET;
 			while (true) {
 				cin >> h;
 				if (cin.fail() || h <= 0) {
 					cin.clear();
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << COLOR_RED << "Your input is incorrect, please reenter: " << COLOR_RESET;
+					cout << COLOR_RED << "Your input is incorrect (MUST be a positive number, recommend in range [2, 8]), please reenter: " << COLOR_RESET;
 				}
 				else break;
 			}

@@ -9,7 +9,7 @@ int main() {
 
 	States* states = new States();
 
-	displayLobby();
+	displayLobby(board, states);
 
 	changeDimension(board, 4, 4);
 

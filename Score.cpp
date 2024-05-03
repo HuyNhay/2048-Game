@@ -1,7 +1,5 @@
 #include "GameLibrary.h"
 
-int GameBoard::bestScore = 0;
-
 void displayScore(GameBoard* board) {
 	cout << COLOR_GREEN << "SCORE:   " << board->score << COLOR_RESET << endl;
 	cout << COLOR_YELLOW << "BEST:    " << GameBoard::bestScore << COLOR_RESET << endl;

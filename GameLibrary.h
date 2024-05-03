@@ -3,6 +3,7 @@
 #include <time.h>
 #include <iostream>
 #include <conio.h>
+#include <string>
 
 #define LONG_TAB "\t\t\t       "
 
@@ -130,6 +131,7 @@ struct GameBoard {
 	int height;
 	int score;
 	static int bestScore;
+	static string playerName;
 	bool isWin;
 
 	GameBoard();
@@ -201,9 +203,9 @@ void changeDimension(GameBoard*, int, int);
 
 void initGrid(GameBoard*, States*);
 
-void insertLine(GameBoard*, char);
+void insertGridBorder(GameBoard*, char);
 
-void displayLobby();
+void displayLobby(GameBoard*, States*);
 
 void displayInstruction();
 
@@ -212,6 +214,8 @@ void displayGame(GameBoard*);
 void swap(int*, int*);
 
 bool availableMove(GameBoard*);
+
+void processEnterPlayerName(GameBoard*, States*);
 
 void processGameOver(GameBoard*&, States*);
 

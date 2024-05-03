@@ -8,6 +8,10 @@ GameBoard::GameBoard() {
 	isWin = false;
 }
 
+int GameBoard::bestScore = 0;
+
+string GameBoard::playerName = "";
+
 void initGrid(GameBoard* board, States* states) {
 	clearStates(states->prev);
 	clearStates(states->next);

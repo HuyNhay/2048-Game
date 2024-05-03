@@ -1,7 +1,7 @@
 ﻿#include "GameLibrary.h"
+#include <string>
 
-void displayLobby() {
-	cout << endl << endl;
+void displayLobby(GameBoard* board, States* states) {
 	cout << endl << endl;
 	cout << endl << endl;
 
@@ -24,12 +24,14 @@ void displayLobby() {
 	while (true) {
 		userChoice = _getch();
 		if (userChoice == KEY_SPACE) {
+			cout << endl << endl << endl;
+			processEnterPlayerName(board, states);
 			return;
 		}
 	}
 }
 
-void insertLine(GameBoard* board, char c) {
+void insertGridBorder(GameBoard* board, char c) {
 	cout << "|";
 	for (int j = 0; j < board->height; j++) {
 		for (int k = 0; k < CELL_LENGTH; k++) {
@@ -64,7 +66,7 @@ void displayGame(GameBoard* board) {
 
 	// display grid
 
-	insertLine(board, '-');
+	insertGridBorder(board, '-');
 
 	for (int i = 0; i < width; i++) {
 		cout << "|";
@@ -106,7 +108,7 @@ void displayGame(GameBoard* board) {
 		}
 		cout << endl;
 
-		insertLine(board, '-');
+		insertGridBorder(board, '-');
 	}
 
 	// display instruction
