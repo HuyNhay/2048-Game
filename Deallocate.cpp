@@ -17,21 +17,15 @@ void clearMemory(GameBoard* board) {
 	board->height = 0;
 }
 
-void deallocateGameBoard(GameBoard* board) {
-	clearMemory(board);
-	delete board;
-}
-
 void deallocateGame(
 	GameBoard* board, 
 	States* states, 
 	List<Player>* rankings, 
 	Player* player
 ) {
-	deallocateGameBoard(board);
-	clearStates(states->prev);
-	clearStates(states->next);
-	saveRankings(rankings, player);
+	rankings->update(*player);
+	rankings->saveToFile();
+	delete board;
 	delete states;
 	delete rankings;
 	delete player;

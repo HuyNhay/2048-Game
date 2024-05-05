@@ -18,8 +18,6 @@
 
 using namespace std;
 
-//typedef List<Player*> Ranks;
-
 const int KEY_UP = 72;
 const int KEY_DOWN = 80;
 const int KEY_LEFT = 75;
@@ -32,7 +30,9 @@ const char KEY_N = 'n';
 const char KEY_Y = 'y';
 const char KEY_C = 'c';
 const char KEY_R = 'r';
+const char KEY_H = 'h';
 const int CELL_LENGTH = 7;
+const int NAME_LENGTH = 23;
 const int R = 12;
 const int C = 13;
 const char ZERO[R][C] = {
@@ -99,7 +99,6 @@ const int NUM_LENGTH[] = {
 };
 const char BG_COLOR[][20] = {
 	"",
-	//"\033[48;2;205;192;180m",
 	"\033[48;2;238;228;218m",
 	"\033[48;2;237;224;200m",
 	"\033[48;2;242;177;121m",
@@ -112,7 +111,7 @@ const char BG_COLOR[][20] = {
 	"\033[48;2;237;204;97m",
 	"\033[48;2;237;204;97m",
 };
-const char COLOR[][20] = {
+const char FONT_COLOR[][20] = {
 	"\033[38;2;119;110;101m",
 	"\033[38;2;119;110;101m",
 	"\033[38;2;119;110;101m",
@@ -126,6 +125,19 @@ const char COLOR[][20] = {
 	"\033[38;2;255;255;255m",
 	"\033[38;2;255;255;255m"
 };
+const char RANK_COLOR[][20] = {
+	"",
+	"\033[38;2;158;1;66m",
+	"\033[38;2;213;62;79m",
+	"\033[38;2;244;109;67m",
+	"\033[38;2;253;174;97m",
+	"\033[38;2;254;224;139m",
+	"\033[38;2;230;245;152m",
+	"\033[38;2;171;221;164m",
+	"\033[38;2;102;194;165m",
+	"\033[38;2;50;136;189m",
+	"\033[38;2;94;79;162m",
+};
 const int WIN_VALUE = 11;
 
 struct GameBoard {
@@ -136,6 +148,8 @@ struct GameBoard {
 	bool isWin;
 
 	GameBoard();
+
+	~GameBoard();
 };
 
 struct Player {
@@ -150,7 +164,7 @@ struct Player {
 
 	void operator=(const Player&);
 
-	void write(ofstream&) const;
+	void writeToFile(ofstream&) const;
 
 	void print() const;
 };
@@ -193,15 +207,17 @@ struct List : ListBase<T> {
 
 template <>
 struct List<Player> : ListBase<Player> {
-	void writeDatas(ofstream&) const;
+	void removePlayer(Player);
 
-	void removePlayer(Player*);
+	void addPlayer(Player);
 
-	void addPlayer(Player*);
+	void update(Player);
 
-	void update(Player*);
+	void loadFromFile(Player*);
 
-	void print() const;
+	void saveToFile();
+
+	void display() const;
 };
 
 template <typename T>
@@ -232,15 +248,9 @@ struct States {
 	~States();
 };
 
-void loadRankings(List<Player>*, Player*);
-
-void saveRankings(List<Player>*, Player*);
-
 void addRandomTile(GameBoard*);
 
 void clearMemory(GameBoard*);
-
-void deallocateGameBoard(GameBoard*);
 
 void deallocateGame(GameBoard*, States*, List<Player>*, Player*);
 
@@ -250,7 +260,7 @@ void initGrid(GameBoard*, States*, Player*);
 
 void insertGridBorder(GameBoard*, char);
 
-void displayLobby(GameBoard*, States*, Player*, List<Player>*);
+void displayLobby();
 
 void displayInstruction();
 
@@ -260,7 +270,7 @@ void swap(int*, int*);
 
 bool availableMove(GameBoard*);
 
-void processEnterPlayerName(GameBoard*, States*, List<Player>*, Player*);
+bool processEnterPlayerName(Player*);
 
 void processGameOver(GameBoard*&, States*, List<Player>*, Player*);
 
@@ -283,6 +293,8 @@ void processChangeDimension(GameBoard*, States*, Player*);
 void processUndo(GameBoard*&, States*, Player*);
 
 void processRedo(GameBoard*&, States*, Player*);
+
+void processShowRankings(List<Player>*);
 
 void processGamePlay(GameBoard*&, States*, List<Player>*, Player*);
 

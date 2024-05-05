@@ -1,12 +1,7 @@
 ﻿#include "GameLibrary.h"
 #include <string>
 
-void displayLobby(
-	GameBoard* board, 
-	States* states, 
-	Player* player, 
-	List<Player>* rankings
-) {
+void displayLobby() {
 	cout << endl << endl;
 	cout << endl << endl;
 
@@ -29,8 +24,6 @@ void displayLobby(
 	while (true) {
 		userChoice = _getch();
 		if (userChoice == KEY_SPACE) {
-			cout << endl << endl << endl;
-			processEnterPlayerName(board, states, rankings, player);
 			return;
 		}
 	}
@@ -49,11 +42,12 @@ void insertGridBorder(GameBoard* board, char c) {
 
 void displayInstruction() {
 	cout << "Use your " << COLOR_GREEN << "arrow keys " << COLOR_RESET << "to move the tiles." << endl;
-	cout << "Undo:         " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
-	cout << "Redo:         " << COLOR_YELLOW << "R" << COLOR_RESET << endl;
-	cout << "New game:     " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
-	cout << "Change sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
-	cout << "Exit:         " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Rankings:     " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
+	cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
+	cout << "Redo:         " << COLOR_YELLOW << "R" << COLOR_RESET << "     ";
+	cout << "New game:  " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
+	cout << "Change sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << "     ";
+	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
 	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 }
 
@@ -88,7 +82,7 @@ void displayGame(GameBoard* board, Player* player) {
 		for (int j = 0; j < board->height; j++) {
 			int& value = board->grid[i][j];
 
-			cout << BG_COLOR[value] << COLOR[value];
+			cout << BG_COLOR[value] << FONT_COLOR[value];
 
 			int len = NUM_LENGTH[value]; // length of number at row i, column j
 			int leftPadding = (CELL_LENGTH - len + 1) / 2;

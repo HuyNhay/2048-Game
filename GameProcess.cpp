@@ -34,12 +34,8 @@ bool availableMove(GameBoard* board) {
 	return false;
 }
 
-void processEnterPlayerName(
-	GameBoard* board,
-	States* states, 
-	List<Player>* rankings,
-	Player* player
-) {
+bool processEnterPlayerName(Player* player) {
+	cout << endl << endl << endl;
 	cout << LONG_TAB << "\t\t\t" << COLOR_GREEN << "Enter your nickname: " << COLOR_RESET;
 	string name = "";
 	for (int ntry = 3; ntry >= 0; ntry--) {
@@ -47,7 +43,7 @@ void processEnterPlayerName(
 		if (cin.fail() || (int)name.length() > 20 || (int)name.length() == 0) { // invalid name
 			if (ntry == 0) {
 				cout << endl << COLOR_RED << "Too much wrong attempts, exit game automatically!" << COLOR_RESET;
-				deallocateGame(board, states, rankings, player);
+				delete player;
 				exit(0);
 			}
 			cout << COLOR_RED;
@@ -58,7 +54,7 @@ void processEnterPlayerName(
 		}
 		else { // valid name
 			player->name = name;
-			return;
+			return true;
 		}
 	}
 }
@@ -474,6 +470,24 @@ void processRedo(GameBoard*& board, States* states, Player* player) {
 	displayGame(board, player);
 }
 
+void processShowRankings(List<Player>* rankings) {
+	system("CLS");
+
+	rankings->display();
+
+	cout << endl << endl;
+	cout << "Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
+
+	char userChoice = 0;
+	while (true) {
+		switch (userChoice = _getch()) {
+		case KEY_SPACE: 
+			return;
+		}
+	}
+
+}
+
 void processGamePlay(
 	GameBoard*& board,
 	States* states,
@@ -517,6 +531,11 @@ void processGamePlay(
 			break;
 		case KEY_R:
 			processRedo(board, states, player);
+			break;
+		case KEY_H:
+			rankings->update(*player);
+			processShowRankings(rankings);
+			displayGame(board, player);
 			break;
 		}
 	}

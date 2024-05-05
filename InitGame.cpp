@@ -1,13 +1,5 @@
 #include "GameLibrary.h"
 
-GameBoard::GameBoard() {
-	grid = nullptr;
-	width = 0;
-	height = 0;
-	score = 0;
-	isWin = false;
-}
-
 void initGrid(GameBoard* board, States* states, Player* player) {
 	clearStates(states->prev);
 	clearStates(states->next);

@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Deallocate.cpp" />
     <ClCompile Include="Dimension.cpp" />
     <ClCompile Include="Display.cpp" />
@@ -135,10 +136,11 @@
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RandomTile.cpp" />
+    <ClCompile Include="Rankings.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="State.cpp" />
-    <ClCompile Include="UserRankings.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLibrary.h" />
