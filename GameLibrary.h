@@ -4,6 +4,7 @@
 #include <iostream>
 #include <conio.h>
 #include <string>
+#include <fstream>
 
 #define LONG_TAB "\t\t\t       "
 
@@ -16,6 +17,8 @@
 #define COLOR_RESET "\033[0m" 
 
 using namespace std;
+
+//typedef List<Player*> Ranks;
 
 const int KEY_UP = 72;
 const int KEY_DOWN = 80;
@@ -130,11 +133,26 @@ struct GameBoard {
 	int width;
 	int height;
 	int score;
-	static int bestScore;
-	static string playerName;
 	bool isWin;
 
 	GameBoard();
+};
+
+struct Player {
+	string name;
+	int bestScore;
+
+	Player();
+
+	Player(string, int);
+
+	~Player();
+
+	void operator=(const Player&);
+
+	void write(ofstream&) const;
+
+	void print() const;
 };
 
 template <typename T>
@@ -150,17 +168,40 @@ struct Node {
 };
 
 template <typename T>
-struct List {
+struct ListBase {
 	Node<T>* head;
 	int size;
 
-	List();
+	ListBase();
 
-	~List();
+	~ListBase();
 
 	void addHead(Node<T>*);
 
+	void addTail(Node<T>*);
+
+	void addPos(int, Node<T>*);
+
 	void removeHead();
+
+	void removePos(int);
+};
+
+template <typename T>
+struct List : ListBase<T> {
+};
+
+template <>
+struct List<Player> : ListBase<Player> {
+	void writeDatas(ofstream&) const;
+
+	void removePlayer(Player*);
+
+	void addPlayer(Player*);
+
+	void update(Player*);
+
+	void print() const;
 };
 
 template <typename T>
@@ -191,61 +232,65 @@ struct States {
 	~States();
 };
 
+void loadRankings(List<Player>*, Player*);
+
+void saveRankings(List<Player>*, Player*);
+
 void addRandomTile(GameBoard*);
 
 void clearMemory(GameBoard*);
 
 void deallocateGameBoard(GameBoard*);
 
-void deallocateGame(GameBoard*, States*);
+void deallocateGame(GameBoard*, States*, List<Player>*, Player*);
 
 void changeDimension(GameBoard*, int, int);
 
-void initGrid(GameBoard*, States*);
+void initGrid(GameBoard*, States*, Player*);
 
 void insertGridBorder(GameBoard*, char);
 
-void displayLobby(GameBoard*, States*);
+void displayLobby(GameBoard*, States*, Player*, List<Player>*);
 
 void displayInstruction();
 
-void displayGame(GameBoard*);
+void displayGame(GameBoard*, Player*);
 
 void swap(int*, int*);
 
 bool availableMove(GameBoard*);
 
-void processEnterPlayerName(GameBoard*, States*);
+void processEnterPlayerName(GameBoard*, States*, List<Player>*, Player*);
 
-void processGameOver(GameBoard*&, States*);
+void processGameOver(GameBoard*&, States*, List<Player>*, Player*);
 
-void processVictory(GameBoard*&, States*);
+void processVictory(GameBoard*&, States*, List<Player>*, Player*);
 
-void processUp(GameBoard*, States*);
+void processUp(GameBoard*, States*, Player*);
 
-void processDown(GameBoard*, States*);
+void processDown(GameBoard*, States*, Player*);
 
-void processLeft(GameBoard*, States*);
+void processLeft(GameBoard*, States*, Player*);
 
-void processRight(GameBoard*, States*);
+void processRight(GameBoard*, States*, Player*);
 
-void processNewGame(GameBoard*, States*);
+void processNewGame(GameBoard*, States*, Player*);
 
-void processQuitGame(GameBoard*, States*);
+void processQuitGame(GameBoard*, States*, List<Player>*, Player*);
 
-void processChangeDimension(GameBoard*, States*);
+void processChangeDimension(GameBoard*, States*, Player*);
 
-void processUndo(GameBoard*&, States*);
+void processUndo(GameBoard*&, States*, Player*);
 
-void processRedo(GameBoard*&, States*);
+void processRedo(GameBoard*&, States*, Player*);
 
-void processGamePlay(GameBoard*&, States*);
+void processGamePlay(GameBoard*&, States*, List<Player>*, Player*);
 
-void displayScore(GameBoard*);
+void displayScore(GameBoard*, Player*);
 
-void updateScore(GameBoard*, const int&);
+void updateScore(GameBoard*, Player*, const int&);
 
-void maximize(int&, const int&);
+bool maximize(int&, const int&);
 
 GameBoard* copyState(GameBoard*);
 

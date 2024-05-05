@@ -9,15 +9,21 @@ int main() {
 
 	States* states = new States();
 
-	displayLobby(board, states);
+	Player* player = new Player();
+
+	List<Player>* rankings = new List<Player>();
+	
+	displayLobby(board, states, player, rankings);
+
+	loadRankings(rankings, player);
 
 	changeDimension(board, 4, 4);
 
-	initGrid(board, states);
+	initGrid(board, states, player);
 
-	processGamePlay(board, states);
+	processGamePlay(board, states, rankings, player);
 
-	deallocateGame(board, states);
+	deallocateGame(board, states, rankings, player);
 
 	return 0;
 }

@@ -8,11 +8,7 @@ GameBoard::GameBoard() {
 	isWin = false;
 }
 
-int GameBoard::bestScore = 0;
-
-string GameBoard::playerName = "";
-
-void initGrid(GameBoard* board, States* states) {
+void initGrid(GameBoard* board, States* states, Player* player) {
 	clearStates(states->prev);
 	clearStates(states->next);
 
@@ -28,5 +24,5 @@ void initGrid(GameBoard* board, States* states) {
 	addRandomTile(board);
 	addRandomTile(board);
 
-	displayGame(board);
+	displayGame(board, player);
 }

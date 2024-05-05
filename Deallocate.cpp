@@ -22,9 +22,17 @@ void deallocateGameBoard(GameBoard* board) {
 	delete board;
 }
 
-void deallocateGame(GameBoard* board, States* states) {
+void deallocateGame(
+	GameBoard* board, 
+	States* states, 
+	List<Player>* rankings, 
+	Player* player
+) {
 	deallocateGameBoard(board);
 	clearStates(states->prev);
 	clearStates(states->next);
+	saveRankings(rankings, player);
 	delete states;
+	delete rankings;
+	delete player;
 }

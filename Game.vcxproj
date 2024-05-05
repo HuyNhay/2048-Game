@@ -138,12 +138,16 @@
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="UserRankings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLibrary.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Rankings.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

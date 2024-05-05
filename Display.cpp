@@ -1,7 +1,12 @@
 ﻿#include "GameLibrary.h"
 #include <string>
 
-void displayLobby(GameBoard* board, States* states) {
+void displayLobby(
+	GameBoard* board, 
+	States* states, 
+	Player* player, 
+	List<Player>* rankings
+) {
 	cout << endl << endl;
 	cout << endl << endl;
 
@@ -25,7 +30,7 @@ void displayLobby(GameBoard* board, States* states) {
 		userChoice = _getch();
 		if (userChoice == KEY_SPACE) {
 			cout << endl << endl << endl;
-			processEnterPlayerName(board, states);
+			processEnterPlayerName(board, states, rankings, player);
 			return;
 		}
 	}
@@ -52,7 +57,7 @@ void displayInstruction() {
 	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 }
 
-void displayGame(GameBoard* board) {
+void displayGame(GameBoard* board, Player* player) {
 	int& width = board->width;
 	int& height = board->height;
 
@@ -60,7 +65,7 @@ void displayGame(GameBoard* board) {
 	system("CLS");
 
 	// display score and best score
-	displayScore(board);
+	displayScore(board, player);
 
 	cout << endl;
 

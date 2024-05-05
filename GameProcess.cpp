@@ -34,7 +34,12 @@ bool availableMove(GameBoard* board) {
 	return false;
 }
 
-void processEnterPlayerName(GameBoard* board, States* states) {
+void processEnterPlayerName(
+	GameBoard* board,
+	States* states, 
+	List<Player>* rankings,
+	Player* player
+) {
 	cout << LONG_TAB << "\t\t\t" << COLOR_GREEN << "Enter your nickname: " << COLOR_RESET;
 	string name = "";
 	for (int ntry = 3; ntry >= 0; ntry--) {
@@ -42,7 +47,7 @@ void processEnterPlayerName(GameBoard* board, States* states) {
 		if (cin.fail() || (int)name.length() > 20 || (int)name.length() == 0) { // invalid name
 			if (ntry == 0) {
 				cout << endl << COLOR_RED << "Too much wrong attempts, exit game automatically!" << COLOR_RESET;
-				deallocateGame(board, states);
+				deallocateGame(board, states, rankings, player);
 				exit(0);
 			}
 			cout << COLOR_RED;
@@ -52,14 +57,19 @@ void processEnterPlayerName(GameBoard* board, States* states) {
 			cout << COLOR_RESET;
 		}
 		else { // valid name
-			GameBoard::playerName = name;
+			player->name = name;
 			return;
 		}
 	}
 }
 
-void processVictory(GameBoard*& board, States* states) {
-	displayGame(board);
+void processVictory(
+	GameBoard*& board, 
+	States* states, 
+	List<Player>* rankings,
+	Player* player
+) {
+	displayGame(board, player);
 
 	cout << "-------- VICTORY --------" << endl;
 	cout << "Congratulations! You have reached " << POW2[WIN_VALUE] << "!" << endl;
@@ -69,22 +79,27 @@ void processVictory(GameBoard*& board, States* states) {
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_N:
-			initGrid(board, states);
+			initGrid(board, states, player);
 			return;
 		case KEY_ESC:
 			cout << endl << COLOR_GREEN << "Exit successfully." << COLOR_RESET << endl;
-			deallocateGame(board, states);
+			deallocateGame(board, states, rankings, player);
 			exit(0);
 		case KEY_U: {
-			processUndo(board, states);
+			processUndo(board, states, player);
 			return;
 		}
 		}
 	}
 }
 
-void processGameOver(GameBoard*& board, States* states) {
-	displayGame(board);
+void processGameOver(
+	GameBoard*& board,
+	States* states,
+	List<Player>* rankings,
+	Player* player
+) {
+	displayGame(board, player);
 
 	cout << "-------- GAME OVER --------" << endl;
 	cout << "New game: " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
@@ -94,22 +109,22 @@ void processGameOver(GameBoard*& board, States* states) {
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_N:
-			initGrid(board, states);
+			initGrid(board, states, player);
 			return;
 		case KEY_ESC: {
 			cout << endl << COLOR_GREEN << "Exit successfully." << COLOR_RESET << endl;
-			deallocateGame(board, states);
+			deallocateGame(board, states, rankings, player);
 			exit(0);
 		}
 		case KEY_U: {
-			processUndo(board, states);
+			processUndo(board, states, player);
 			return;
 		}
 		}
 	}
 }
 
-void processUp(GameBoard* board, States* states) {
+void processUp(GameBoard* board, States* states, Player* player) {
 	// save this state
 	pushState(states->prev, board);
 
@@ -126,7 +141,7 @@ void processUp(GameBoard* board, States* states) {
 				flag = 1;
 				board->grid[row][col]++;
 				board->grid[row2][col] = 0;
-				updateScore(board, POW2[board->grid[row][col]]);
+				updateScore(board, player, POW2[board->grid[row][col]]);
 				if (board->grid[row][col] == WIN_VALUE) board->isWin = 1;
 			}
 		}
@@ -153,20 +168,20 @@ void processUp(GameBoard* board, States* states) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board);
+		displayGame(board, player);
 
 		// clear all next states
 		clearStates(states->next);
 	}
 	else { // if not
-		displayGame(board);
+		displayGame(board, player);
 		cout << COLOR_YELLOW << "Unable to move up!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
 }
 
-void processDown(GameBoard* board, States* states) {
+void processDown(GameBoard* board, States* states, Player* player) {
 	// save this state
 	pushState(states->prev, board);
 
@@ -183,7 +198,7 @@ void processDown(GameBoard* board, States* states) {
 				flag = 1;
 				board->grid[row][col]++;
 				board->grid[row2][col] = 0;
-				updateScore(board, POW2[board->grid[row][col]]);
+				updateScore(board, player, POW2[board->grid[row][col]]);
 				if (board->grid[row][col] == WIN_VALUE) board->isWin = 1;
 			}
 		}
@@ -210,20 +225,20 @@ void processDown(GameBoard* board, States* states) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board);
+		displayGame(board, player);
 
 		// clear all next states
 		clearStates(states->next);
 	}
 	else { // if not
-		displayGame(board);
+		displayGame(board, player);
 		cout << COLOR_YELLOW << "Unable to move down!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
 }
 
-void processLeft(GameBoard* board, States* states) {
+void processLeft(GameBoard* board, States* states, Player* player) {
 	// save this state
 	pushState(states->prev, board);
 
@@ -240,7 +255,7 @@ void processLeft(GameBoard* board, States* states) {
 				flag = 1;
 				board->grid[row][col]++;
 				board->grid[row][col2] = 0;
-				updateScore(board, POW2[board->grid[row][col]]);
+				updateScore(board, player, POW2[board->grid[row][col]]);
 				if (board->grid[row][col] == WIN_VALUE) board->isWin = 1;
 			}
 		}
@@ -267,20 +282,20 @@ void processLeft(GameBoard* board, States* states) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board);
+		displayGame(board, player);
 
 		// clear all next states
 		clearStates(states->next);
 	}
 	else { // if not
-		displayGame(board);
+		displayGame(board, player);
 		cout << COLOR_YELLOW << "Unable to move left!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
 }
 
-void processRight(GameBoard* board, States* states) {
+void processRight(GameBoard* board, States* states, Player* player) {
 	// save this state
 	pushState(states->prev, board);
 
@@ -297,7 +312,7 @@ void processRight(GameBoard* board, States* states) {
 				flag = 1;
 				board->grid[row][col]++;
 				board->grid[row][col2] = 0;
-				updateScore(board, POW2[board->grid[row][col]]);
+				updateScore(board, player, POW2[board->grid[row][col]]);
 				if (board->grid[row][col] == WIN_VALUE) board->isWin = 1;
 			}
 		}
@@ -324,21 +339,21 @@ void processRight(GameBoard* board, States* states) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board);
+		displayGame(board, player);
 
 		// clear all next states
 		clearStates(states->next);
 	}
 	else { // if not
-		displayGame(board);
+		displayGame(board, player);
 		cout << COLOR_YELLOW << "Unable to move right!" << COLOR_RESET << endl;
 
 		popState(states->prev);
 	}
 }
 
-void processNewGame(GameBoard* board, States* states) {
-	displayGame(board);
+void processNewGame(GameBoard* board, States* states, Player* player) {
+	displayGame(board, player);
 
 	cout << "Do you want to start a new game? All progress will be lost." << endl;
 	cout << "Press " <<
@@ -349,17 +364,17 @@ void processNewGame(GameBoard* board, States* states) {
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_Y:
-			initGrid(board, states);
+			initGrid(board, states, player);
 			return;
 		case KEY_N:
-			displayGame(board);
+			displayGame(board, player);
 			return;
 		}
 	}
 }
 
-void processQuitGame(GameBoard* board, States* states) {
-	displayGame(board);
+void processQuitGame(GameBoard* board, States* states, List<Player>* rankings, Player* player) {
+	displayGame(board, player);
 
 	cout << "Do you want to exit the game?" << endl;
 	cout << "Press " <<
@@ -371,18 +386,18 @@ void processQuitGame(GameBoard* board, States* states) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
 			cout << endl << COLOR_GREEN << "Exit successfully." << COLOR_RESET << endl;
-			deallocateGame(board, states);
+			deallocateGame(board, states, rankings, player);
 			exit(0);
 		}
 		case KEY_N:
-			displayGame(board);
+			displayGame(board, player);
 			return;
 		}
 	}
 }
 
-void processChangeDimension(GameBoard* board, States* states) {
-	displayGame(board);
+void processChangeDimension(GameBoard* board, States* states, Player* player) {
+	displayGame(board, player);
 
 	cout << "Do you want to change dimension?" << endl;
 	cout << "Press " << 
@@ -418,20 +433,20 @@ void processChangeDimension(GameBoard* board, States* states) {
 			}
 
 			changeDimension(board, w, h);
-			initGrid(board, states);
+			initGrid(board, states, player);
 			
 			return;
 		}
 		case KEY_N:
-			displayGame(board);
+			displayGame(board, player);
 			return;
 		}
 	}
 }
 
-void processUndo(GameBoard*& board, States* states) {
+void processUndo(GameBoard*& board, States* states, Player* player) {
 	if (states->prev.isEmpty()) {
-		displayGame(board);
+		displayGame(board, player);
 		cout << COLOR_YELLOW << "Unable to undo!" << COLOR_RESET << endl;
 		return;
 	}
@@ -441,12 +456,12 @@ void processUndo(GameBoard*& board, States* states) {
 	board = states->prev.top();
 	states->prev.pop();
 
-	displayGame(board);
+	displayGame(board, player);
 }
 
-void processRedo(GameBoard*& board, States* states) {
+void processRedo(GameBoard*& board, States* states, Player* player) {
 	if (states->next.isEmpty()) {
-		displayGame(board);
+		displayGame(board, player);
 		cout << COLOR_YELLOW << "Unable to redo!" << COLOR_RESET << endl;
 		return;
 	}
@@ -456,47 +471,52 @@ void processRedo(GameBoard*& board, States* states) {
 	board = states->next.top();
 	states->next.pop();
 
-	displayGame(board);
+	displayGame(board, player);
 }
 
-void processGamePlay(GameBoard*& board, States* states) {
+void processGamePlay(
+	GameBoard*& board,
+	States* states,
+	List<Player>* rankings,
+	Player* player
+) {
 	int userChoice = 0;
 	while (true) {
 		if (board->isWin) {
-			processVictory(board, states);
+			processVictory(board, states, rankings, player);
 		}
 
 		if (!availableMove(board)) {
-			processGameOver(board, states);
+			processGameOver(board, states, rankings, player);
 		}
 
 		switch (userChoice = _getch()) {
 		case KEY_UP:
-			processUp(board, states);
+			processUp(board, states, player);
 			break;
 		case KEY_DOWN:
-			processDown(board, states);
+			processDown(board, states, player);
 			break;
 		case KEY_LEFT:
-			processLeft(board, states);
+			processLeft(board, states, player);
 			break;
 		case KEY_RIGHT:
-			processRight(board, states);
+			processRight(board, states, player);
 			break;
 		case KEY_N:
-			processNewGame(board, states);
+			processNewGame(board, states, player);
 			break;
 		case KEY_ESC:
-			processQuitGame(board, states);
+			processQuitGame(board, states, rankings, player);
 			break;
 		case KEY_C:
-			processChangeDimension(board, states);
+			processChangeDimension(board, states, player);
 			break;
 		case KEY_U:
-			processUndo(board, states);
+			processUndo(board, states, player);
 			break;
 		case KEY_R:
-			processRedo(board, states);
+			processRedo(board, states, player);
 			break;
 		}
 	}
