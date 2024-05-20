@@ -42,12 +42,12 @@ void insertGridBorder(GameBoard* board, char c) {
 
 void displayInstruction() {
 	cout << "Use your " << COLOR_GREEN << "arrow keys " << COLOR_RESET << "to move the tiles." << endl;
-	cout << "Rankings:     " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
-	cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
-	cout << "Redo:         " << COLOR_YELLOW << "R" << COLOR_RESET << "     ";
-	cout << "New game:  " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
-	cout << "Change sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << "     ";
-	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << "     ";
+	cout << "Redo:         " << COLOR_YELLOW << "R" << COLOR_RESET << endl;
+	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
+	cout << "Change sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
+	cout << "New game:  " << COLOR_YELLOW << "N" << COLOR_RESET << "     ";
+	cout << "Exit:         " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
 	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 }
 
