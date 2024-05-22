@@ -38,7 +38,6 @@ void processEnterPlayerName(Player* player) {
 	cout << LONG_TAB << "\t       " << COLOR_YELLOW << "spaces will be removed) : " << COLOR_RESET;
 	string name = "";
 	for (int ntry = 3; ntry >= 0; ntry--) {
-		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		getline(cin, name);
 		removeSpaces(name);
 		if ((int)name.length() > 20 || (int)name.length() == 0) { // invalid name
@@ -63,8 +62,9 @@ void processEnterPlayerName(Player* player) {
 void processChangeGridSizesLobby(GameBoard* board) {
 	displaySettings(board);
 
-	cout << "Do you want to change grid sizes?" << endl;
-	cout << "Press " <<
+	cout << " -------------------------------------------------" << endl;
+	cout << " Do you want to change grid sizes?" << endl;
+	cout << " Press " <<
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
 		COLOR_YELLOW << "N " << COLOR_RESET << "to cancel." << endl;
 
@@ -73,25 +73,25 @@ void processChangeGridSizesLobby(GameBoard* board) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
 			int w;
-			cout << COLOR_GREEN << "Enter number of rows: " << COLOR_RESET;
+			cout << COLOR_GREEN << " Enter number of rows: " << COLOR_RESET;
 			while (true) {
 				cin >> w;
-				if (cin.fail() || w <= 0) {
+				if (cin.fail() || w <= 0 || w > 10) {
 					cin.clear();
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << COLOR_RED << "Your input is not incorrect (MUST be a positive number, recommend in range [2, 8]), please reenter: " << COLOR_RESET;
+					cout << COLOR_RED << " Your input is not incorrect (MUST be a positive number, recommend in range [2, 8]), please reenter: " << COLOR_RESET;
 				}
 				else break;
 			}
 
 			int h;
-			cout << COLOR_GREEN << "Enter number of columns: " << COLOR_RESET;
+			cout << COLOR_GREEN << " Enter number of columns: " << COLOR_RESET;
 			while (true) {
 				cin >> h;
-				if (cin.fail() || h <= 0) {
+				if (cin.fail() || h <= 0 || h > 10) {
 					cin.clear();
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << COLOR_RED << "Your input is incorrect (MUST be a positive number, recommend in range [2, 8]), please reenter: " << COLOR_RESET;
+					cout << COLOR_RED << " Your input is incorrect (MUST be a positive number, in range [1, 10]), please reenter: " << COLOR_RESET;
 				}
 				else break;
 			}
@@ -100,7 +100,7 @@ void processChangeGridSizesLobby(GameBoard* board) {
 
 			displaySettings(board);
 
-			cout << "Changed grid sizes!" << endl;
+			cout << COLOR_YELLOW << " Changed grid sizes!" << COLOR_RESET << endl;
 
 			return;
 		}
@@ -114,11 +114,13 @@ void processChangeGridSizesLobby(GameBoard* board) {
 void displaySettings(GameBoard* board) {
 	system("CLS");
 
-	cout << "\t      " << COLOR_GREEN << "SETTINGS" << COLOR_RESET << endl;
+	cout << "      " << COLOR_ORANGE << "SETTINGS" << COLOR_RESET << endl;
 	cout << endl;
 
-	cout << " Grid sizes: " << board->width << "x" << board->height << endl;
-	cout << " Game mode: " << "Undo + Redo" << endl;
+	cout << COLOR_ORANGE << " Grid sizes: " << COLOR_RESET 
+		<< board->width << "x" << board->height << endl;
+	cout << COLOR_ORANGE << " Game mode: " << COLOR_RESET 
+		<< "Undo + Redo" << endl;
 	cout << endl << endl;
 
 	cout << " Change grid sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << endl;

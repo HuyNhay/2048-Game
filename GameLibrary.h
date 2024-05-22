@@ -15,6 +15,7 @@
 #define COLOR_BLUE "\033[34m" 
 #define COLOR_MAGENTA "\033[35m" 
 #define COLOR_CYAN "\033[36m" 
+#define COLOR_ORANGE "\033[38;2;242;177;121m"
 #define COLOR_RESET "\033[0m" 
 
 using namespace std;
@@ -242,6 +243,7 @@ struct Stack {
 };
 
 struct States {
+
 	Stack<GameBoard*> prev;
 	Stack<GameBoard*> next;
 
@@ -252,17 +254,13 @@ struct States {
 
 // Lobby
 void processLobby(GameBoard*, Player*);
-
 void displayLobby();
-
 void processEnterPlayerName(Player*);
-
 void displaySettings(GameBoard*);
-
 void processSettings(GameBoard*);
-
 void processChangeGridSizesLobby(GameBoard*);
 //
+
 void removeSpaces(string&);
 
 void addRandomTile(GameBoard*);
