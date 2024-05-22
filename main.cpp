@@ -7,20 +7,18 @@ int main() {
 	srand((unsigned int)time(NULL));
 
 	Player* player = new Player();
-	
-	displayLobby();
-
-	processEnterPlayerName(player);
 
 	GameBoard* board = new GameBoard();
 
+	changeDimension(board, 4, 4);
+
 	States* states = new States();
 
+	processLobby(board, player);
+	
 	List<Player>* rankings = new List<Player>();
 
 	rankings->loadFromFile(player);
-
-	changeDimension(board, 4, 4);
 
 	initGrid(board, states, player);
 

@@ -1,34 +1,6 @@
 ﻿#include "GameLibrary.h"
 #include <string>
 
-void displayLobby() {
-	cout << endl << endl;
-	cout << endl << endl;
-
-	for (int i = 0; i < R; i++) {
-		cout << LONG_TAB;
-		cout << COLOR_YELLOW << TWO[i] << "\t";
-		cout << COLOR_GREEN << ZERO[i] << "\t";
-		cout << COLOR_RED << FOUR[i] << "\t";
-		cout << COLOR_CYAN << EIGHT[i] << endl;
-		cout << COLOR_RESET;
-	}
-
-	cout << endl;
-	cout << LONG_TAB << LONG_TAB << "\t\t\t\t" << "--- Remade By HUYDEPTRAIVKL ---";
-	
-	cout << endl << endl;
-	cout << LONG_TAB << "\t\t\t" << "Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to play...";
-
-	int userChoice = 0;
-	while (true) {
-		userChoice = _getch();
-		if (userChoice == KEY_SPACE) {
-			return;
-		}
-	}
-}
-
 void insertGridBorder(GameBoard* board, char c) {
 	cout << "|";
 	for (int j = 0; j < board->height; j++) {

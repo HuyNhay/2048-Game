@@ -134,7 +134,9 @@
     <ClCompile Include="GameProcess.cpp" />
     <ClCompile Include="InitGame.cpp" />
     <ClCompile Include="LinkedList.cpp" />
+    <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Name.cpp" />
     <ClCompile Include="RandomTile.cpp" />
     <ClCompile Include="Rankings.cpp" />
     <ClCompile Include="Score.cpp" />

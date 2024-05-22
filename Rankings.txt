@@ -1,17 +1,23 @@
 Rhyder
 2124
+Pham Bao Huy
+1028
 Obito
 996
 Jack
 772
+Wxrdie
+652
 Noo Phuoc Thinh
 504
 girl
 488
+Andree
+464
 huy
 404
-Wxrdie
-224
+MCK
+296
 tlinh
 192
   huy
@@ -20,13 +26,11 @@ Son Tung MTP
 168
 g
 60
-Andree
-24
 Huy
 4
-MCK
-0
 Justatee
 0
 24k.Right
+0
+king
 0

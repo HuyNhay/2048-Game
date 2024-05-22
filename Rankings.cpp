@@ -70,7 +70,7 @@ void List<Player>::saveToFile() {
 }
 
 void List<Player>::display() const {
-	cout << "\t      " COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
+	cout << "\t      " << COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
 	cout << endl;
 
 	cout << " Rank   ";

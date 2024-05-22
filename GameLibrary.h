@@ -7,6 +7,7 @@
 #include <fstream>
 
 #define LONG_TAB "\t\t\t       "
+#define TAB "        "
 
 #define COLOR_RED "\033[31m" 
 #define COLOR_GREEN "\033[32m" 
@@ -31,6 +32,7 @@ const char KEY_Y = 'y';
 const char KEY_C = 'c';
 const char KEY_R = 'r';
 const char KEY_H = 'h';
+const char KEY_S = 's';
 const int CELL_LENGTH = 7;
 const int NAME_LENGTH = 23;
 const int R = 12;
@@ -248,6 +250,21 @@ struct States {
 	~States();
 };
 
+// Lobby
+void processLobby(GameBoard*, Player*);
+
+void displayLobby();
+
+void processEnterPlayerName(Player*);
+
+void displaySettings(GameBoard*);
+
+void processSettings(GameBoard*);
+
+void processChangeGridSizesLobby(GameBoard*);
+//
+void removeSpaces(string&);
+
 void addRandomTile(GameBoard*);
 
 void clearMemory(GameBoard*);
@@ -260,8 +277,6 @@ void initGrid(GameBoard*, States*, Player*);
 
 void insertGridBorder(GameBoard*, char);
 
-void displayLobby();
-
 void displayInstruction();
 
 void displayGame(GameBoard*, Player*);
@@ -270,11 +285,9 @@ void swap(int*, int*);
 
 bool availableMove(GameBoard*);
 
-bool processEnterPlayerName(Player*);
+bool processGameOver(GameBoard*&, States*, List<Player>*, Player*);
 
-void processGameOver(GameBoard*&, States*, List<Player>*, Player*);
-
-void processVictory(GameBoard*&, States*, List<Player>*, Player*);
+bool processVictory(GameBoard*&, States*, List<Player>*, Player*);
 
 void processUp(GameBoard*, States*, Player*);
 
@@ -286,9 +299,9 @@ void processRight(GameBoard*, States*, Player*);
 
 void processNewGame(GameBoard*, States*, Player*);
 
-void processQuitGame(GameBoard*, States*, List<Player>*, Player*);
+bool processQuitGame(GameBoard*, States*, List<Player>*, Player*);
 
-void processChangeDimension(GameBoard*, States*, Player*);
+void processChangeGridSizesMain(GameBoard*, States*, Player*);
 
 void processUndo(GameBoard*&, States*, Player*);
 
