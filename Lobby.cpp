@@ -59,10 +59,10 @@ void processEnterPlayerName(Player* player) {
 	}
 }
 
-void processChangeGridSizesLobby(GameBoard* board) {
-	displaySettings(board);
+void processChangeGridSizesLobby(GameBoard* board, States* states) {
+	displaySettings(board, states);
 
-	cout << " -------------------------------------------------" << endl;
+	cout << " ----------------------------------------" << endl;
 	cout << " Do you want to change grid sizes?" << endl;
 	cout << " Press " <<
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
@@ -96,22 +96,24 @@ void processChangeGridSizesLobby(GameBoard* board) {
 				else break;
 			}
 
-			changeDimension(board, w, h);
+			cin.ignore();
 
-			displaySettings(board);
+			changeGridSizes(board, w, h);
+
+			displaySettings(board, states);
 
 			cout << COLOR_YELLOW << " Changed grid sizes!" << COLOR_RESET << endl;
 
 			return;
 		}
 		case KEY_N:
-			displaySettings(board);
+			displaySettings(board, states);
 			return;
 		}
 	}
 }
 
-void displaySettings(GameBoard* board) {
+void displaySettings(GameBoard* board, States* states) {
 	system("CLS");
 
 	cout << "      " << COLOR_ORANGE << "SETTINGS" << COLOR_RESET << endl;
@@ -119,34 +121,107 @@ void displaySettings(GameBoard* board) {
 
 	cout << COLOR_ORANGE << " Grid sizes: " << COLOR_RESET 
 		<< board->width << "x" << board->height << endl;
-	cout << COLOR_ORANGE << " Game mode: " << COLOR_RESET 
-		<< "Undo + Redo" << endl;
+	cout << COLOR_ORANGE << " Game mode: " << COLOR_RESET;
+		//<< "Undo + Redo" << endl;
+	cout << "Undo: " 
+		<< COLOR_YELLOW << (states->activePrev ? "ON" : "OFF") << COLOR_RESET << ", ";
+	cout << "Redo: "
+		<< COLOR_YELLOW << (states->activeNext ? "ON" : "OFF") << COLOR_RESET << endl;
 	cout << endl << endl;
 
+	cout << " ----------------------------------------" << endl;
 	cout << " Change grid sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
 	cout << " Change game mode:  " << COLOR_YELLOW << "M" << COLOR_RESET << endl;
 	cout << " Back to lobby:     " << COLOR_YELLOW << "Space" << COLOR_RESET << endl;
 	cout << endl << endl;
 }
 
-void processSettings(GameBoard* board) {
-	displaySettings(board);
+void changeGameMode(States* states, int mode) {
+	if (mode == KEY_1) {
+		states->activePrev = false;
+		states->activeNext = false;
+	}
+	else if (mode == KEY_2) {
+		states->activePrev = true;
+		states->activeNext = false;
+	}
+	else {
+		states->activePrev = true;
+		states->activeNext = true;
+	}
+}
+
+void processChangeGameMode(GameBoard* board, States* states) {
+	displaySettings(board, states);
+
+	cout << " ----------------------------------------" << endl;
+	cout << " Do you want to change game mode?" << endl;
+	cout << " Press " <<
+		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
+		COLOR_YELLOW << "N " << COLOR_RESET << "to cancel." << endl;
 
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
-		case KEY_C:
-			processChangeGridSizesLobby(board);
-			break;
-		case KEY_SPACE:
-			displayLobby();
-			cin.ignore();
+		case KEY_Y: {
+			displaySettings(board, states);
+
+			cout << " Which mode do you want?" << endl;
+			cout << " (" << COLOR_YELLOW << "1" << COLOR_RESET << ") " << 
+				"Undo: " << COLOR_YELLOW << "OFF" << COLOR_RESET << ", " <<
+				"Redo: " << COLOR_YELLOW << "OFF" << COLOR_RESET << endl;
+
+			cout << " (" << COLOR_YELLOW << "2" << COLOR_RESET << ") " <<
+				"Undo: " << COLOR_YELLOW << "ON" << COLOR_RESET << ", " <<
+				"Redo: " << COLOR_YELLOW << "OFF" << COLOR_RESET << endl;
+
+			cout << " (" << COLOR_YELLOW << "3" << COLOR_RESET << ") " <<
+				"Undo: " << COLOR_YELLOW << "ON" << COLOR_RESET << ", " <<
+				"Redo: " << COLOR_YELLOW << "ON" << COLOR_RESET << endl;
+
+
+			int mode = 0;
+			while (true) {
+				switch (mode = _getch()) {
+				case KEY_1: 
+				case KEY_2:
+				case KEY_3:
+					changeGameMode(states, mode);
+					displaySettings(board, states);
+					
+					cout << COLOR_YELLOW << " Changed game mode!" << COLOR_RESET << endl;
+					return;
+				}
+			}
+		}
+		case KEY_N:
+			displaySettings(board, states);
 			return;
 		}
 	}
 }
 
-void processLobby(GameBoard* board, Player* player) {
+void processSettings(GameBoard* board, States* states) {
+	displaySettings(board, states);
+
+	int userChoice = 0;
+	while (true) {
+		switch (userChoice = _getch()) {
+		case KEY_C:
+			processChangeGridSizesLobby(board, states);
+			break;
+		case KEY_M:
+			processChangeGameMode(board, states);
+			break;
+		case KEY_SPACE:
+			displayLobby();
+			//cin.ignore();
+			return;
+		}
+	}
+}
+
+void processLobby(GameBoard* board, Player* player, States* states) {
 	displayLobby();
 
 	int userChoice = 0;
@@ -156,7 +231,7 @@ void processLobby(GameBoard* board, Player* player) {
 			processEnterPlayerName(player);
 			return;
 		case KEY_S:
-			processSettings(board);
+			processSettings(board, states);
 			break;
 		case KEY_H:
 			break;

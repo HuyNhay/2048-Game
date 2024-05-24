@@ -40,7 +40,7 @@ bool processVictory(
 	List<Player>* rankings,
 	Player* player
 ) {
-	displayGame(board, player);
+	displayMainScreen(board, states, player);
 
 	cout << "-------- VICTORY --------" << endl;
 	cout << "Congratulations! You have reached " << POW2[WIN_VALUE] << "!" << endl;
@@ -69,12 +69,12 @@ bool processGameOver(
 	List<Player>* rankings,
 	Player* player
 ) {
-	displayGame(board, player);
+	displayMainScreen(board, states, player);
 
 	cout << "-------- GAME OVER --------" << endl;
 	cout << "New game: " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
 	cout << "Exit:     " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
-	cout << "Undo:     " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
+	if (states->activePrev) cout << "Undo:     " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
@@ -86,6 +86,7 @@ bool processGameOver(
 			return true;
 		}
 		case KEY_U: {
+			if (!states->activePrev) break;
 			processUndo(board, states, player);
 			return false;
 		}
@@ -95,7 +96,7 @@ bool processGameOver(
 
 void processUp(GameBoard* board, States* states, Player* player) {
 	// save this state
-	pushState(states->prev, board);
+	if (states->activePrev) pushState(states->prev, board);
 
 	// merge tiles
 	bool flag = 0;
@@ -137,24 +138,24 @@ void processUp(GameBoard* board, States* states, Player* player) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 
 		// clear all next states
-		clearStates(states->next);
+		if (states->activeNext) clearStates(states->next);
 
 		cout << COLOR_YELLOW << "Moved up!" << COLOR_RESET << endl;
 	}
 	else { // if not
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 		cout << COLOR_YELLOW << "Unable to move up!" << COLOR_RESET << endl;
 
-		popState(states->prev);
+		if (states->activePrev) popState(states->prev);
 	}
 }
 
 void processDown(GameBoard* board, States* states, Player* player) {
 	// save this state
-	pushState(states->prev, board);
+	if (states->activePrev) pushState(states->prev, board);
 
 	// merge tiles
 	bool flag = 0;
@@ -196,24 +197,24 @@ void processDown(GameBoard* board, States* states, Player* player) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 
 		// clear all next states
-		clearStates(states->next);
+		if (states->activeNext) clearStates(states->next);
 
 		cout << COLOR_YELLOW << "Moved down!" << COLOR_RESET << endl;
 	}
 	else { // if not
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 		cout << COLOR_YELLOW << "Unable to move down!" << COLOR_RESET << endl;
 
-		popState(states->prev);
+		if (states->activePrev) popState(states->prev);
 	}
 }
 
 void processLeft(GameBoard* board, States* states, Player* player) {
 	// save this state
-	pushState(states->prev, board);
+	if (states->activePrev) pushState(states->prev, board);
 
 	// merge tiles
 	bool flag = 0;
@@ -255,24 +256,24 @@ void processLeft(GameBoard* board, States* states, Player* player) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 
 		// clear all next states
-		clearStates(states->next);
+		if (states->activeNext) clearStates(states->next);
 
 		cout << COLOR_YELLOW << "Moved left!" << COLOR_RESET << endl;
 	}
 	else { // if not
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 		cout << COLOR_YELLOW << "Unable to move left!" << COLOR_RESET << endl;
 
-		popState(states->prev);
+		if (states->activePrev) popState(states->prev);
 	}
 }
 
 void processRight(GameBoard* board, States* states, Player* player) {
 	// save this state
-	pushState(states->prev, board);
+	if (states->activePrev) pushState(states->prev, board);
 
 	// merge tiles
 	bool flag = 0;
@@ -314,23 +315,23 @@ void processRight(GameBoard* board, States* states, Player* player) {
 		addRandomTile(board);
 
 		// redisplay
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 
 		// clear all next states
-		clearStates(states->next);
+		if (states->activeNext) clearStates(states->next);
 
 		cout << COLOR_YELLOW << "Moved right!" << COLOR_RESET << endl;
 	}
 	else { // if not
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 		cout << COLOR_YELLOW << "Unable to move right!" << COLOR_RESET << endl;
 
-		popState(states->prev);
+		if (states->activePrev) popState(states->prev);
 	}
 }
 
 void processNewGame(GameBoard* board, States* states, Player* player) {
-	displayGame(board, player);
+	displayMainScreen(board, states, player);
 
 	cout << "Do you want to start a new game? All progress will be lost." << endl;
 	cout << "Press " <<
@@ -344,14 +345,14 @@ void processNewGame(GameBoard* board, States* states, Player* player) {
 			initGrid(board, states, player);
 			return;
 		case KEY_N:
-			displayGame(board, player);
+			displayMainScreen(board, states, player);
 			return;
 		}
 	}
 }
 
 bool processQuitGame(GameBoard* board, States* states, List<Player>* rankings, Player* player) {
-	displayGame(board, player);
+	displayMainScreen(board, states, player);
 
 	cout << "Do you want to exit the game?" << endl;
 	cout << "Press " <<
@@ -366,14 +367,14 @@ bool processQuitGame(GameBoard* board, States* states, List<Player>* rankings, P
 			return true;
 		}
 		case KEY_N:
-			displayGame(board, player);
+			displayMainScreen(board, states, player);
 			return false;
 		}
 	}
 }
 
 void processChangeGridSizesMain(GameBoard* board, States* states, Player* player) {
-	displayGame(board, player);
+	displayMainScreen(board, states, player);
 
 	cout << "Do you want to change dimension?" << endl;
 	cout << "Press " << 
@@ -408,38 +409,43 @@ void processChangeGridSizesMain(GameBoard* board, States* states, Player* player
 				else break;
 			}
 
-			changeDimension(board, w, h);
+			changeGridSizes(board, w, h);
 			initGrid(board, states, player);
 			
 			return;
 		}
 		case KEY_N:
-			displayGame(board, player);
+			displayMainScreen(board, states, player);
 			return;
 		}
 	}
 }
 
 void processUndo(GameBoard*& board, States* states, Player* player) {
+	if (!states->activePrev) return;
+
 	if (states->prev.isEmpty()) {
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 		cout << COLOR_YELLOW << "Unable to undo!" << COLOR_RESET << endl;
 		return;
 	}
 
-	states->next.push(board);
+	if (states->activeNext) states->next.push(board);
+	else delete board;
 
 	board = states->prev.top();
 	states->prev.pop();
 
-	displayGame(board, player);
+	displayMainScreen(board, states, player);
 
 	cout << COLOR_YELLOW << "Undoed!" << COLOR_RESET << endl;
 }
 
 void processRedo(GameBoard*& board, States* states, Player* player) {
+	if (!states->activeNext) return;
+
 	if (states->next.isEmpty()) {
-		displayGame(board, player);
+		displayMainScreen(board, states, player);
 		cout << COLOR_YELLOW << "Unable to redo!" << COLOR_RESET << endl;
 		return;
 	}
@@ -449,7 +455,7 @@ void processRedo(GameBoard*& board, States* states, Player* player) {
 	board = states->next.top();
 	states->next.pop();
 
-	displayGame(board, player);
+	displayMainScreen(board, states, player);
 
 	cout << COLOR_YELLOW << "Redoed!" << COLOR_RESET << endl;
 }
@@ -526,7 +532,7 @@ void processGamePlay(
 		case KEY_H:
 			rankings->update(*player);
 			processShowRankings(rankings);
-			displayGame(board, player);
+			displayMainScreen(board, states, player);
 			break;
 		}
 	}

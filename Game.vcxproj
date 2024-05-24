@@ -129,10 +129,9 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Deallocate.cpp" />
-    <ClCompile Include="Dimension.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="GameProcess.cpp" />
-    <ClCompile Include="InitGame.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="main.cpp" />

@@ -10,11 +10,11 @@ int main() {
 
 	GameBoard* board = new GameBoard();
 
-	changeDimension(board, 4, 4);
+	changeGridSizes(board, 4, 4);
 
 	States* states = new States();
 
-	processLobby(board, player);
+	processLobby(board, player, states);
 	
 	List<Player>* rankings = new List<Player>();
 
@@ -28,3 +28,4 @@ int main() {
 
 	return 0;
 }
+

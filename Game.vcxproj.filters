@@ -21,16 +21,10 @@
     <ClCompile Include="Deallocate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dimension.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameProcess.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InitGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RandomTile.cpp">
@@ -61,6 +55,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Lobby.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

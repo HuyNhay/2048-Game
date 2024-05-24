@@ -12,10 +12,11 @@ void insertGridBorder(GameBoard* board, char c) {
 	cout << endl;
 }
 
-void displayInstruction() {
+void displayInstruction(States* states) {
 	cout << "Use your " << COLOR_GREEN << "arrow keys " << COLOR_RESET << "to move the tiles." << endl;
-	cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << "     ";
-	cout << "Redo:         " << COLOR_YELLOW << "R" << COLOR_RESET << endl;
+	if (states->activePrev) cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << "     ";
+	if (states->activeNext) cout << "Redo:         " << COLOR_YELLOW << "R" << COLOR_RESET << endl;
+	else if (states->activePrev) cout << endl;
 	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
 	cout << "Change sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
 	cout << "New game:  " << COLOR_YELLOW << "N" << COLOR_RESET << "     ";
@@ -23,7 +24,7 @@ void displayInstruction() {
 	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 }
 
-void displayGame(GameBoard* board, Player* player) {
+void displayMainScreen(GameBoard* board, States* states, Player* player) {
 	int& width = board->width;
 	int& height = board->height;
 
@@ -84,7 +85,7 @@ void displayGame(GameBoard* board, Player* player) {
 
 	// display instruction
 	cout << endl;
-	displayInstruction();
+	displayInstruction(states);
 
 	cout << endl;
 }

@@ -34,6 +34,10 @@ const char KEY_C = 'c';
 const char KEY_R = 'r';
 const char KEY_H = 'h';
 const char KEY_S = 's';
+const char KEY_M = 'm';
+const char KEY_1 = '1';
+const char KEY_2 = '2';
+const char KEY_3 = '3';
 const int CELL_LENGTH = 7;
 const int NAME_LENGTH = 23;
 const int R = 12;
@@ -243,7 +247,8 @@ struct Stack {
 };
 
 struct States {
-
+	bool activePrev;
+	bool activeNext;
 	Stack<GameBoard*> prev;
 	Stack<GameBoard*> next;
 
@@ -253,31 +258,32 @@ struct States {
 };
 
 // Lobby
-void processLobby(GameBoard*, Player*);
+void processLobby(GameBoard*, Player*, States*);
 void displayLobby();
 void processEnterPlayerName(Player*);
-void displaySettings(GameBoard*);
-void processSettings(GameBoard*);
-void processChangeGridSizesLobby(GameBoard*);
-//
-
 void removeSpaces(string&);
+void processSettings(GameBoard*, States*);
+void displaySettings(GameBoard*, States*);
+void processChangeGridSizesLobby(GameBoard*, States*);
+void processChangeGameMode(GameBoard*, States*);
+void changeGameMode(States*, int);
 
+// Grid
+void changeGridSizes(GameBoard*, int, int);
+void initGrid(GameBoard*, States*, Player*);
 void addRandomTile(GameBoard*);
+
+//
 
 void clearMemory(GameBoard*);
 
 void deallocateGame(GameBoard*, States*, List<Player>*, Player*);
 
-void changeDimension(GameBoard*, int, int);
-
-void initGrid(GameBoard*, States*, Player*);
-
 void insertGridBorder(GameBoard*, char);
 
-void displayInstruction();
+void displayInstruction(States*);
 
-void displayGame(GameBoard*, Player*);
+void displayMainScreen(GameBoard*, States*, Player*);
 
 void swap(int*, int*);
 

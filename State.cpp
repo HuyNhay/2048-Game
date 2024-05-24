@@ -1,16 +1,19 @@
 #include "GameLibrary.h"
 
-States::States() {}
+States::States() {
+	activePrev = false;
+	activeNext = false;
+}
 
 States::~States() {
-	clearStates(prev);
-	clearStates(next);
+	if (activePrev) clearStates(prev);
+	if (activeNext) clearStates(next);
 }
 
 GameBoard* copyState(GameBoard* board) {
 	GameBoard* copyBoard = new GameBoard;
 
-	changeDimension(copyBoard, board->width, board->height);
+	changeGridSizes(copyBoard, board->width, board->height);
 
 	copyBoard->score = board->score;
 	copyBoard->isWin = board->isWin;
