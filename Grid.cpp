@@ -16,6 +16,8 @@ void initGrid(GameBoard* board, States* states, Player* player) {
 	if (states->activePrev) clearStates(states->prev);
 	if (states->activeNext) clearStates(states->next);
 
+	player->startTime = high_resolution_clock::now();
+
 	board->isWin = 0;
 	for (int i = 0; i < board->width; i++) {
 		for (int j = 0; j < board->height; j++) {

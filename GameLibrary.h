@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <string>
 #include <fstream>
+#include <chrono>
 
 #define LONG_TAB "\t\t\t       "
 #define TAB "        "
@@ -19,6 +20,7 @@
 #define COLOR_RESET "\033[0m" 
 
 using namespace std;
+using namespace std::chrono;
 
 const int KEY_UP = 72;
 const int KEY_DOWN = 80;
@@ -40,6 +42,7 @@ const char KEY_2 = '2';
 const char KEY_3 = '3';
 const int CELL_LENGTH = 7;
 const int NAME_LENGTH = 23;
+const int SCORE_LENGTH = 16;
 const int R = 12;
 const int C = 13;
 const char ZERO[R][C] = {
@@ -144,8 +147,40 @@ const char RANK_COLOR[][20] = {
 	"\033[38;2;102;194;165m",
 	"\033[38;2;50;136;189m",
 	"\033[38;2;94;79;162m",
+
+	"\033[38;2;158;1;66m",
+	"\033[38;2;213;62;79m",
+	"\033[38;2;244;109;67m",
+	"\033[38;2;253;174;97m",
+	"\033[38;2;254;224;139m",
+	"\033[38;2;230;245;152m",
+	"\033[38;2;171;221;164m",
+	"\033[38;2;102;194;165m",
+	"\033[38;2;50;136;189m",
+	"\033[38;2;94;79;162m",
+
 };
 const int WIN_VALUE = 11;
+
+// player
+struct Player {
+	string name;
+	int bestScore;
+	high_resolution_clock::time_point startTime;
+	long long playTime;
+
+	Player();
+
+	Player(string, int, long long);
+
+	~Player();
+
+	void operator=(const Player&);
+
+	void writeToFile(ofstream&) const;
+
+	void print() const;
+};
 
 struct GameBoard {
 	int **grid;
@@ -157,23 +192,6 @@ struct GameBoard {
 	GameBoard();
 
 	~GameBoard();
-};
-
-struct Player {
-	string name;
-	int bestScore;
-
-	Player();
-
-	Player(string, int);
-
-	~Player();
-
-	void operator=(const Player&);
-
-	void writeToFile(ofstream&) const;
-
-	void print() const;
 };
 
 template <typename T>
@@ -212,6 +230,7 @@ template <typename T>
 struct List : ListBase<T> {
 };
 
+// rankings
 template <>
 struct List<Player> : ListBase<Player> {
 	void removePlayer(Player);
@@ -220,12 +239,15 @@ struct List<Player> : ListBase<Player> {
 
 	void update(Player);
 
-	void loadFromFile(Player*);
+	void loadFromFile();
 
 	void saveToFile();
 
 	void display() const;
 };
+void processShowRankings(List<Player>*);
+
+bool checkNameExistence(List<Player>*, string);
 
 template <typename T>
 struct Stack {
@@ -258,9 +280,9 @@ struct States {
 };
 
 // Lobby
-void processLobby(GameBoard*, Player*, States*);
+void processLobby(GameBoard*, Player*, States*, List<Player>*);
 void displayLobby();
-void processEnterPlayerName(Player*);
+void processEnterPlayerName(Player*, List<Player>*);
 void removeSpaces(string&);
 void processSettings(GameBoard*, States*);
 void displaySettings(GameBoard*, States*);
@@ -274,7 +296,6 @@ void initGrid(GameBoard*, States*, Player*);
 void addRandomTile(GameBoard*);
 
 //
-
 void clearMemory(GameBoard*);
 
 void deallocateGame(GameBoard*, States*, List<Player>*, Player*);
@@ -291,7 +312,7 @@ bool availableMove(GameBoard*);
 
 bool processGameOver(GameBoard*&, States*, List<Player>*, Player*);
 
-bool processVictory(GameBoard*&, States*, List<Player>*, Player*);
+bool processVictory(GameBoard*&, States*, Player*);
 
 void processUp(GameBoard*, States*, Player*);
 
@@ -311,8 +332,6 @@ void processUndo(GameBoard*&, States*, Player*);
 
 void processRedo(GameBoard*&, States*, Player*);
 
-void processShowRankings(List<Player>*);
-
 void processGamePlay(GameBoard*&, States*, List<Player>*, Player*);
 
 void displayScore(GameBoard*, Player*);
@@ -328,3 +347,5 @@ void pushState(Stack<GameBoard*>&, GameBoard*);
 void popState(Stack<GameBoard*>&);
 
 void clearStates(Stack<GameBoard*>&);
+
+int numberLength(int);

@@ -35,22 +35,21 @@ void List<Player>::addPlayer(Player player) {
 void List<Player>::update(Player player) {
 	removePlayer(player);
 	addPlayer(player);
+	while (size > 20) {
+		removePos(size - 1);
+	}
 }
 
-void List<Player>::loadFromFile(Player* player) {
+void List<Player>::loadFromFile() {
 	ifstream input("Rankings.txt");
 	if (!input.is_open()) {
 		return;
 	}
 	string name = "";
 	int score = 0;
-	while (getline(input, name) && input >> score) {
-		if (name == player->name) {
-			player->bestScore = score;
-		}
-
-		addTail(new Node<Player>(Player(name, score)));
-
+	long long playTime = 0;
+	while (getline(input, name) && input >> score && input >> playTime) {
+		addTail(new Node<Player>(Player(name, score, playTime)));
 		input.ignore();
 	}
 	input.close();
@@ -70,7 +69,7 @@ void List<Player>::saveToFile() {
 }
 
 void List<Player>::display() const {
-	cout << "\t      " << COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
+	cout << "\t            " << COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
 	cout << endl;
 
 	cout << " Rank   ";
@@ -80,12 +79,14 @@ void List<Player>::display() const {
 		cout << " ";
 	}
 
-	cout << "Score" << endl;
+	cout << "Score          ";
+
+	cout << "Played Time" << endl;
 
 	int index = 1;
 	for (
 		Node<Player>* curNode = head;
-		curNode != nullptr && index <= 10;
+		curNode != nullptr && index <= 20;
 		curNode = curNode->next, index++
 		) {
 		Player& player = curNode->data;
@@ -107,8 +108,36 @@ void List<Player>::display() const {
 		}
 
 		// print best score
-		cout << player.bestScore << endl;
+		cout << player.bestScore;
+		for (
+			int i = 1, length = numberLength(player.bestScore);
+			i < SCORE_LENGTH - length;
+			i++
+			) {
+			cout << " ";
+		}
+
+		// print played time
+		cout << player.playTime << "s" << endl;
 
 		cout << COLOR_RESET;
 	}
+}
+
+void processShowRankings(List<Player>* rankings) {
+	system("CLS");
+
+	rankings->display();
+
+	cout << endl << endl;
+	cout << "Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
+
+	int userChoice = 0;
+	while (true) {
+		switch (userChoice = _getch()) {
+		case KEY_SPACE:
+			return;
+		}
+	}
+
 }

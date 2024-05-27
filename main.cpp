@@ -14,12 +14,12 @@ int main() {
 
 	States* states = new States();
 
-	processLobby(board, player, states);
-	
 	List<Player>* rankings = new List<Player>();
 
-	rankings->loadFromFile(player);
+	rankings->loadFromFile();
 
+	processLobby(board, player, states, rankings);
+	
 	initGrid(board, states, player);
 
 	processGamePlay(board, states, rankings, player);

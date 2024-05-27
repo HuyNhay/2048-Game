@@ -25,8 +25,6 @@ void removeSpaces(string& name) {
 
     name = name.substr(first, last - first + 1);
 
-    cout << name << endl;
-
     // remove middle spaces
     string s = "";
     for (int i = 0; i < (int)name.size(); i++) {
@@ -34,5 +32,8 @@ void removeSpaces(string& name) {
         s = s + name[i];
     }
     name = s;
-    cout << name << endl;
+}
+
+int numberLength(int num) {
+    return to_string(num).length();
 }

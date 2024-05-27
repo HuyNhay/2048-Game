@@ -37,7 +37,6 @@ bool availableMove(GameBoard* board) {
 bool processVictory(
 	GameBoard*& board, 
 	States* states, 
-	List<Player>* rankings,
 	Player* player
 ) {
 	displayMainScreen(board, states, player);
@@ -55,10 +54,9 @@ bool processVictory(
 		case KEY_ESC:
 			cout << endl << COLOR_GREEN << "Exit successfully." << COLOR_RESET << endl;
 			return true;
-		case KEY_U: {
+		case KEY_U:
 			processUndo(board, states, player);
 			return false;
-		}
 		}
 	}
 }
@@ -460,24 +458,6 @@ void processRedo(GameBoard*& board, States* states, Player* player) {
 	cout << COLOR_YELLOW << "Redoed!" << COLOR_RESET << endl;
 }
 
-void processShowRankings(List<Player>* rankings) {
-	system("CLS");
-
-	rankings->display();
-
-	cout << endl << endl;
-	cout << "Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
-
-	char userChoice = 0;
-	while (true) {
-		switch (userChoice = _getch()) {
-		case KEY_SPACE: 
-			return;
-		}
-	}
-
-}
-
 void processGamePlay(
 	GameBoard*& board,
 	States* states,
@@ -488,7 +468,7 @@ void processGamePlay(
 	int userChoice = 0;
 	while (true) {
 		if (board->isWin) {
-			if (processVictory(board, states, rankings, player)) {
+			if (processVictory(board, states, player)) {
 				return;
 			}
 		}

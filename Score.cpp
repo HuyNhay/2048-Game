@@ -17,6 +17,9 @@ void updateScore(
 	const int& value
 ) {
 	board->score += value;
-	maximize(player->bestScore, board->score);
+	if (maximize(player->bestScore, board->score)) {
+		auto stopTime = high_resolution_clock::now();
+		player->playTime = duration_cast<seconds>(stopTime - player->startTime).count();
+	}
 }
 

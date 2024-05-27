@@ -30,7 +30,7 @@ void displayLobby() {
 	cout << endl;
 }
 
-void processEnterPlayerName(Player* player) {
+void processEnterPlayerName(Player* player, List<Player>* rankings) {
 	cout << endl << endl;
 	cout << LONG_TAB << "\t       " << "Pressed " << COLOR_YELLOW << "N" << COLOR_RESET
 		<< ", enter your nickname." << endl;
@@ -40,15 +40,23 @@ void processEnterPlayerName(Player* player) {
 	for (int ntry = 3; ntry >= 0; ntry--) {
 		getline(cin, name);
 		removeSpaces(name);
-		if ((int)name.length() > 20 || (int)name.length() == 0) { // invalid name
+		if ((int)name.length() > 20 || (int)name.length() == 0 || checkNameExistence(rankings, name)) { // invalid name
 			if (ntry == 0) {
 				cout << endl << COLOR_RED << "Too much wrong attempts, exit game automatically!" << COLOR_RESET;
 				delete player;
 				exit(0);
 			}
 			cout << COLOR_RED;
-			cout << "\t\t\t    " <<
-				"Your nickname is invalid (NOT empty and NOT more than 20 characters) " << endl;
+
+			if ((int)name.length() > 20 || (int)name.length() == 0) {
+				cout << "\t\t\t    " <<
+					"Your nickname is invalid (NOT empty, NOT more than 20 characters) " << endl;
+			}
+			else {
+				cout << "\t\t\t    " <<
+					"Your nickname is invalid (already used in top 20) " << endl;
+			}
+
 			cout << LONG_TAB << "\t\t\t" << "Please reenter (" << ntry << " more) : ";
 			cout << COLOR_RESET;
 		}
@@ -221,19 +229,21 @@ void processSettings(GameBoard* board, States* states) {
 	}
 }
 
-void processLobby(GameBoard* board, Player* player, States* states) {
+void processLobby(GameBoard* board, Player* player, States* states, List<Player>* rankings) {
 	displayLobby();
 
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_N:
-			processEnterPlayerName(player);
+			processEnterPlayerName(player, rankings);
 			return;
 		case KEY_S:
 			processSettings(board, states);
 			break;
 		case KEY_H:
+			processShowRankings(rankings);
+			displayLobby();
 			break;
 		case KEY_R:
 			break;
