@@ -16,6 +16,11 @@ void Stack<T>::push(T item) {
 }
 
 template <typename T>
+void Stack<T>::pushTail(T item) {
+	st->addTail(new Node<T>(item));
+}
+
+template <typename T>
 T Stack<T>::top() {
 	return (*st->head).data;
 }

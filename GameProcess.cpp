@@ -464,7 +464,6 @@ void processGamePlay(
 	List<Player>* rankings,
 	Player* player
 ) {
-
 	int userChoice = 0;
 	while (true) {
 		if (board->isWin) {
@@ -497,6 +496,7 @@ void processGamePlay(
 			break;
 		case KEY_ESC:
 			if (processQuitGame(board, states, rankings, player)) {
+				saveGame(board, states, rankings, player);
 				return;
 			}
 			break;
@@ -511,7 +511,7 @@ void processGamePlay(
 			break;
 		case KEY_H:
 			rankings->update(*player);
-			processShowRankings(rankings);
+			processShowRankings(rankings, player);
 			displayMainScreen(board, states, player);
 			break;
 		}

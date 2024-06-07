@@ -138,6 +138,7 @@
     <ClCompile Include="Name.cpp" />
     <ClCompile Include="RandomTile.cpp" />
     <ClCompile Include="Rankings.cpp" />
+    <ClCompile Include="Resume.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="State.cpp" />
@@ -150,7 +151,12 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Rankings.txt" />
+    <Text Include="Board.txt" />
+    <Text Include="NextStates.txt" />
+    <Text Include="Player.txt" />
+    <Text Include="PreviousStates.txt" />
+    <Text Include="Ranks.txt" />
+    <Text Include="StatesActive.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

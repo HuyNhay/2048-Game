@@ -23,8 +23,6 @@ void deallocateGame(
 	List<Player>* rankings, 
 	Player* player
 ) {
-	rankings->update(*player);
-	rankings->saveToFile();
 	delete board;
 	delete states;
 	delete rankings;

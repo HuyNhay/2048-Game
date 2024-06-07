@@ -60,6 +60,9 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Resume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLibrary.h">
@@ -72,7 +75,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Rankings.txt">
+    <Text Include="Board.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Player.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Ranks.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="StatesActive.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="PreviousStates.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="NextStates.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

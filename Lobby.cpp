@@ -1,6 +1,6 @@
 #include "GameLibrary.h"
 
-void displayLobby() {
+void displayLobby(bool resumeAvailable) {
 	system("CLS");
 
 	cout << endl << endl;
@@ -20,19 +20,21 @@ void displayLobby() {
 	cout << endl << endl << endl;
 
 	cout << TAB << "       ";
-	cout << COLOR_YELLOW << "New game: N" << COLOR_RESET;
+	cout << COLOR_YELLOW << "New game: G" << COLOR_RESET;
 	cout << TAB << "|" << TAB;
 	cout << COLOR_GREEN << "Settings: S" << COLOR_RESET;
 	cout << TAB << "|" << TAB;
 	cout << COLOR_RED << "Rankings: H" << COLOR_RESET;
 	cout << TAB << "|" << TAB;
-	cout << COLOR_CYAN << "Resume: R" << COLOR_RESET;
+	cout << COLOR_CYAN << "Resume: R ";
+	if (!resumeAvailable) cout << "(Error)";
+	cout << COLOR_RESET;
 	cout << endl;
+	cout << endl << endl;
 }
 
-void processEnterPlayerName(Player* player, List<Player>* rankings) {
-	cout << endl << endl;
-	cout << LONG_TAB << "\t       " << "Pressed " << COLOR_YELLOW << "N" << COLOR_RESET
+bool processEnterPlayerName(Player* player, List<Player>* rankings) {
+	cout << LONG_TAB << "\t       " << "Pressed " << COLOR_YELLOW << "G" << COLOR_RESET
 		<< ", enter your nickname." << endl;
 	cout << LONG_TAB << "\t       " << COLOR_YELLOW << "Nickname (any unnecessary " << COLOR_RESET << endl;
 	cout << LONG_TAB << "\t       " << COLOR_YELLOW << "spaces will be removed) : " << COLOR_RESET;
@@ -43,8 +45,7 @@ void processEnterPlayerName(Player* player, List<Player>* rankings) {
 		if ((int)name.length() > 20 || (int)name.length() == 0 || checkNameExistence(rankings, name)) { // invalid name
 			if (ntry == 0) {
 				cout << endl << COLOR_RED << "Too much wrong attempts, exit game automatically!" << COLOR_RESET;
-				delete player;
-				exit(0);
+				return false;
 			}
 			cout << COLOR_RED;
 
@@ -53,16 +54,16 @@ void processEnterPlayerName(Player* player, List<Player>* rankings) {
 					"Your nickname is invalid (NOT empty, NOT more than 20 characters) " << endl;
 			}
 			else {
-				cout << "\t\t\t    " <<
+				cout << "\t\t\t\t    " <<
 					"Your nickname is invalid (already used in top 20) " << endl;
 			}
 
-			cout << LONG_TAB << "\t\t\t" << "Please reenter (" << ntry << " more) : ";
+			cout << LONG_TAB << "\t       " << "Please reenter (" << ntry << " more) : ";
 			cout << COLOR_RESET;
 		}
 		else { // valid name
 			player->name = name;
-			return;
+			return true;
 		}
 	}
 }
@@ -70,6 +71,7 @@ void processEnterPlayerName(Player* player, List<Player>* rankings) {
 void processChangeGridSizesLobby(GameBoard* board, States* states) {
 	displaySettings(board, states);
 
+	cout << " Pressed C" << endl;
 	cout << " ----------------------------------------" << endl;
 	cout << " Do you want to change grid sizes?" << endl;
 	cout << " Press " <<
@@ -80,7 +82,10 @@ void processChangeGridSizesLobby(GameBoard* board, States* states) {
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
+			displaySettings(board, states);
 			int w;
+			cout << " Pressed Y" << endl;
+			cout << " ----------------------------------------" << endl;
 			cout << COLOR_GREEN << " Enter number of rows: " << COLOR_RESET;
 			while (true) {
 				cin >> w;
@@ -116,6 +121,7 @@ void processChangeGridSizesLobby(GameBoard* board, States* states) {
 		}
 		case KEY_N:
 			displaySettings(board, states);
+			cout << " Pressed N" << endl;
 			return;
 		}
 	}
@@ -130,7 +136,6 @@ void displaySettings(GameBoard* board, States* states) {
 	cout << COLOR_ORANGE << " Grid sizes: " << COLOR_RESET 
 		<< board->width << "x" << board->height << endl;
 	cout << COLOR_ORANGE << " Game mode: " << COLOR_RESET;
-		//<< "Undo + Redo" << endl;
 	cout << "Undo: " 
 		<< COLOR_YELLOW << (states->activePrev ? "ON" : "OFF") << COLOR_RESET << ", ";
 	cout << "Redo: "
@@ -162,6 +167,7 @@ void changeGameMode(States* states, int mode) {
 void processChangeGameMode(GameBoard* board, States* states) {
 	displaySettings(board, states);
 
+	cout << " Pressed M" << endl;
 	cout << " ----------------------------------------" << endl;
 	cout << " Do you want to change game mode?" << endl;
 	cout << " Press " <<
@@ -174,6 +180,7 @@ void processChangeGameMode(GameBoard* board, States* states) {
 		case KEY_Y: {
 			displaySettings(board, states);
 
+			cout << " Pressed Y" << endl;
 			cout << " Which mode do you want?" << endl;
 			cout << " (" << COLOR_YELLOW << "1" << COLOR_RESET << ") " << 
 				"Undo: " << COLOR_YELLOW << "OFF" << COLOR_RESET << ", " <<
@@ -195,8 +202,10 @@ void processChangeGameMode(GameBoard* board, States* states) {
 				case KEY_2:
 				case KEY_3:
 					changeGameMode(states, mode);
+
 					displaySettings(board, states);
-					
+
+					cout << " Pressed " << mode - '0' << " " << endl;
 					cout << COLOR_YELLOW << " Changed game mode!" << COLOR_RESET << endl;
 					return;
 				}
@@ -204,6 +213,7 @@ void processChangeGameMode(GameBoard* board, States* states) {
 		}
 		case KEY_N:
 			displaySettings(board, states);
+			cout << " Pressed N" << endl;
 			return;
 		}
 	}
@@ -222,32 +232,81 @@ void processSettings(GameBoard* board, States* states) {
 			processChangeGameMode(board, states);
 			break;
 		case KEY_SPACE:
-			displayLobby();
-			//cin.ignore();
 			return;
 		}
 	}
 }
 
+bool processResume(GameBoard* board, States* states, Player* player, bool resumeAvailable) {	
+	cout << LONG_TAB << "\t       " << "Pressed " << COLOR_CYAN << "R" <<COLOR_RESET << endl;
+
+	if (!resumeAvailable) {
+		cout << COLOR_YELLOW;
+		cout << LONG_TAB << "\t       " << "Unable to resume! No players played before!" << endl;
+		cout << COLOR_RESET;
+		return false;
+	}
+
+	cout << LONG_TAB << "\t       " << "----------------------------------------" << endl;
+	cout << LONG_TAB << "\t       " << "Do you want to resume?" << endl;
+	cout << LONG_TAB << "\t       " << "Press " <<
+		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
+		COLOR_YELLOW << "N " << COLOR_RESET << "to cancel." << endl;
+
+	int userChoice = 0;
+	while (true) {
+		switch (userChoice = _getch()) {
+		case KEY_Y: {
+			loadPlayer(player);
+			loadStatesActiveStatus(states);
+			loadGameBoard(board);
+			if (states->activePrev) {
+				loadPrevStates(states);
+			}
+			if (states->activeNext) {
+				loadNextStates(states);
+			}
+			return true;
+		}
+		case KEY_N:
+			displayLobby(resumeAvailable);
+			cout << LONG_TAB << "\t       " << "Pressed N" << endl;
+			return false;
+		}
+	}
+}
+
 void processLobby(GameBoard* board, Player* player, States* states, List<Player>* rankings) {
-	displayLobby();
+	bool resumeAvailable = !rankings->isEmpty();
+	displayLobby(resumeAvailable);
 
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_N:
-			processEnterPlayerName(player, rankings);
-			return;
+			displayLobby(resumeAvailable);
+			if (processEnterPlayerName(player, rankings)) {
+				initGrid(board, states, player);
+				return;
+			}
+			else {
+				deallocateGame(board, states, rankings, player);
+				exit(0);
+			}
 		case KEY_S:
 			processSettings(board, states);
+			displayLobby(resumeAvailable);
 			break;
 		case KEY_H:
-			processShowRankings(rankings);
-			displayLobby();
+			processShowRankings(rankings, player);
+			displayLobby(resumeAvailable);
 			break;
 		case KEY_R:
-			break;
+			displayLobby(resumeAvailable);
+			if (processResume(board, states, player, resumeAvailable)) {
+				displayMainScreen(board, states, player);
+				return;
+			}
 		}
 	}
-
 }

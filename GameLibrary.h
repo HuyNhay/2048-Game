@@ -243,9 +243,11 @@ struct List<Player> : ListBase<Player> {
 
 	void saveToFile();
 
-	void display() const;
+	bool isEmpty() const;
+
+	void display(Player*) const;
 };
-void processShowRankings(List<Player>*);
+void processShowRankings(List<Player>*, Player* player);
 
 bool checkNameExistence(List<Player>*, string);
 
@@ -258,6 +260,8 @@ struct Stack {
 	~Stack();
 
 	void push(T);
+
+	void pushTail(T);
 
 	T top();
 
@@ -281,14 +285,26 @@ struct States {
 
 // Lobby
 void processLobby(GameBoard*, Player*, States*, List<Player>*);
-void displayLobby();
-void processEnterPlayerName(Player*, List<Player>*);
+void displayLobby(bool);
+bool processEnterPlayerName(Player*, List<Player>*);
 void removeSpaces(string&);
 void processSettings(GameBoard*, States*);
 void displaySettings(GameBoard*, States*);
 void processChangeGridSizesLobby(GameBoard*, States*);
 void processChangeGameMode(GameBoard*, States*);
 void changeGameMode(States*, int);
+bool processResume(GameBoard*, States*, Player*, bool);
+
+// Resume
+void saveGame(GameBoard*, States*, List<Player>*, Player*);
+void savePlayer(Player*);
+void saveStates(States*);
+void saveGameBoard(GameBoard*);
+void loadPlayer(Player*);
+void loadStatesActiveStatus(States*);
+void loadGameBoard(GameBoard*);
+void loadPrevStates(States*);
+void loadNextStates(States*);
 
 // Grid
 void changeGridSizes(GameBoard*, int, int);

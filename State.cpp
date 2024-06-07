@@ -42,3 +42,4 @@ void clearStates(Stack<GameBoard*>& states) {
 		popState(states);
 	}
 }
+

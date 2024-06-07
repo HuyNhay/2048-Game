@@ -47,3 +47,4 @@ bool checkNameExistence(List<Player>* rankings, string name) {
 	}
 	return false;
 }
+

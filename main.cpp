@@ -1,4 +1,3 @@
-// Pull newest version at: https://github.com/HuyNhay/2048-Game.git
 #include "GameLibrary.h"
 
 using namespace std;
@@ -9,19 +8,15 @@ int main() {
 	Player* player = new Player();
 
 	GameBoard* board = new GameBoard();
-
 	changeGridSizes(board, 4, 4);
 
 	States* states = new States();
 
 	List<Player>* rankings = new List<Player>();
-
 	rankings->loadFromFile();
 
 	processLobby(board, player, states, rankings);
 	
-	initGrid(board, states, player);
-
 	processGamePlay(board, states, rankings, player);
 
 	deallocateGame(board, states, rankings, player);

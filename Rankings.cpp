@@ -41,7 +41,7 @@ void List<Player>::update(Player player) {
 }
 
 void List<Player>::loadFromFile() {
-	ifstream input("Rankings.txt");
+	ifstream input("Ranks.txt");
 	if (!input.is_open()) {
 		return;
 	}
@@ -56,7 +56,7 @@ void List<Player>::loadFromFile() {
 }
 
 void List<Player>::saveToFile() {
-	ofstream output("Rankings.txt");
+	ofstream output("Ranks.txt");
 	for (
 		Node<Player>* curNode = head;
 		curNode != nullptr;
@@ -68,14 +68,18 @@ void List<Player>::saveToFile() {
 
 }
 
-void List<Player>::display() const {
-	cout << "\t            " << COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
+bool List<Player>::isEmpty() const {
+	return (size == 0);
+}
+
+void List<Player>::display(Player* user) const {
+	cout << "\t                 " << COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
 	cout << endl;
 
 	cout << " Rank   ";
 
 	cout << "Nickname";
-	for (int i = 1; i < NAME_LENGTH - 8; i++) {
+	for (int i = 1; i < NAME_LENGTH - 1; i++) {
 		cout << " ";
 	}
 
@@ -100,12 +104,13 @@ void List<Player>::display() const {
 		// print name
 		cout << player.name;
 		for (
-			int i = 1;
-			i < NAME_LENGTH - player.name.length();
+			int i = 1, length = player.name.length();
+			i < NAME_LENGTH - length;
 			i++
 			) {
 			cout << " ";
 		}
+		cout << (player.name == user->name ? "(you)  " : "       ");
 
 		// print best score
 		cout << player.bestScore;
@@ -124,10 +129,10 @@ void List<Player>::display() const {
 	}
 }
 
-void processShowRankings(List<Player>* rankings) {
+void processShowRankings(List<Player>* rankings, Player* player) {
 	system("CLS");
 
-	rankings->display();
+	rankings->display(player);
 
 	cout << endl << endl;
 	cout << "Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
