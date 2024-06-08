@@ -13,11 +13,15 @@ int main() {
 	States* states = new States();
 
 	List<Player>* rankings = new List<Player>();
-	rankings->loadFromFile();
+	loadRankings(rankings);
 
 	processLobby(board, player, states, rankings);
 	
 	processGamePlay(board, states, rankings, player);
+
+	saveRankings(rankings, player);
+
+	saveResumeGame(board, states, player);
 
 	deallocateGame(board, states, rankings, player);
 

@@ -18,7 +18,9 @@ void loadPlayer(Player* player) {
 
 	getline(input, player->name);
 	input >> player->bestScore;
-	input >> player->playTime;
+	input >> player->addedTime;
+	player->startTime = player->startTime = high_resolution_clock::now();
+	player->playTime = player->addedTime;
 
 	input.close();
 }
@@ -48,6 +50,7 @@ void saveStates(States* states) {
 				}
 				//output << endl;
 			}
+			output << endl;
 
 			states->prev.pop();
 
@@ -72,6 +75,7 @@ void saveStates(States* states) {
 					output << board->grid[i][j] << " ";
 				}
 			}
+			output << endl;
 
 			states->next.pop();
 
@@ -209,15 +213,11 @@ void loadNextStates(States* states) {
 	input.close();
 }
 
-void saveGame(
+void saveResumeGame(
 	GameBoard* board,
 	States* states,
-	List<Player>* rankings,
 	Player* player
 ) {
-	rankings->update(*player);
-	rankings->saveToFile();
-
 	savePlayer(player);
 	saveStates(states);
 	saveGameBoard(board);

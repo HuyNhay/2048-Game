@@ -3,6 +3,7 @@
 Player::Player() {
 	name = "";
 	bestScore = 0;
+	addedTime = 0;
 	playTime = 0;
 }
 
@@ -15,6 +16,7 @@ Player::Player(string _name, int _bestScore, long long _playTime) {
 Player::~Player() {
 	name = "";
 	bestScore = 0;
+	addedTime = 0;
 	playTime = 0;
 }
 
@@ -22,6 +24,7 @@ void Player::operator=(const Player& other) {
 	name = other.name;
 	bestScore = other.bestScore;
 	startTime = other.startTime;
+	addedTime = other.addedTime;
 	playTime = other.playTime;
 }
 
@@ -34,17 +37,3 @@ void Player::writeToFile(ofstream& output) const {
 void Player::print() const {
 	cout << name << endl << bestScore << endl;
 }
-
-bool checkNameExistence(List<Player>* rankings, string name) {
-	for (
-		Node<Player>* curNode = rankings->head;
-		curNode != nullptr;
-		curNode = curNode->next
-		) {
-		if (curNode->data.name == name) {
-			return true;
-		}
-	}
-	return false;
-}
-

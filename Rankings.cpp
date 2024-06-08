@@ -40,21 +40,6 @@ void List<Player>::update(Player player) {
 	}
 }
 
-void List<Player>::loadFromFile() {
-	ifstream input("Ranks.txt");
-	if (!input.is_open()) {
-		return;
-	}
-	string name = "";
-	int score = 0;
-	long long playTime = 0;
-	while (getline(input, name) && input >> score && input >> playTime) {
-		addTail(new Node<Player>(Player(name, score, playTime)));
-		input.ignore();
-	}
-	input.close();
-}
-
 void List<Player>::saveToFile() {
 	ofstream output("Ranks.txt");
 	for (
@@ -72,70 +57,33 @@ bool List<Player>::isEmpty() const {
 	return (size == 0);
 }
 
-void List<Player>::display(Player* user) const {
-	cout << "\t                 " << COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
-	cout << endl;
-
-	cout << " Rank   ";
-
-	cout << "Nickname";
-	for (int i = 1; i < NAME_LENGTH - 1; i++) {
-		cout << " ";
+void loadRankings(List<Player>* rankings) {
+	ifstream input("Ranks.txt");
+	if (!input.is_open()) {
+		return;
 	}
-
-	cout << "Score          ";
-
-	cout << "Played Time" << endl;
-
-	int index = 1;
-	for (
-		Node<Player>* curNode = head;
-		curNode != nullptr && index <= 20;
-		curNode = curNode->next, index++
-		) {
-		Player& player = curNode->data;
-		cout << RANK_COLOR[index];
-
-		// print index
-		cout << " " << index;
-		if (index < 10) cout << "      ";
-		else cout << "     ";
-		
-		// print name
-		cout << player.name;
-		for (
-			int i = 1, length = player.name.length();
-			i < NAME_LENGTH - length;
-			i++
-			) {
-			cout << " ";
-		}
-		cout << (player.name == user->name ? "(you)  " : "       ");
-
-		// print best score
-		cout << player.bestScore;
-		for (
-			int i = 1, length = numberLength(player.bestScore);
-			i < SCORE_LENGTH - length;
-			i++
-			) {
-			cout << " ";
-		}
-
-		// print played time
-		cout << player.playTime << "s" << endl;
-
-		cout << COLOR_RESET;
+	string name = "";
+	int score = 0;
+	long long playTime = 0;
+	while (getline(input, name) && input >> score && input >> playTime) {
+		rankings->addTail(new Node<Player>(Player(name, score, playTime)));
+		input.ignore();
 	}
+	input.close();
+}
+
+void saveRankings(List<Player>* rankings, Player* player) {
+	rankings->update(*player);
+	rankings->saveToFile();
 }
 
 void processShowRankings(List<Player>* rankings, Player* player) {
 	system("CLS");
 
-	rankings->display(player);
+	displayRankings(rankings, player);
 
 	cout << endl << endl;
-	cout << "Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
+	cout << " Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
 
 	int userChoice = 0;
 	while (true) {

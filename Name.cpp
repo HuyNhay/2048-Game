@@ -35,5 +35,18 @@ void removeSpaces(string& name) {
 }
 
 int numberLength(int num) {
-    return to_string(num).length();
+    return (int)to_string(num).length();
+}
+
+bool checkNameExistence(List<Player>* rankings, string name) {
+    for (
+        Node<Player>* curNode = rankings->head;
+        curNode != nullptr;
+        curNode = curNode->next
+        ) {
+        if (curNode->data.name == name) {
+            return true;
+        }
+    }
+    return false;
 }

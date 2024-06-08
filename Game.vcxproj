@@ -136,7 +136,6 @@
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Name.cpp" />
-    <ClCompile Include="RandomTile.cpp" />
     <ClCompile Include="Rankings.cpp" />
     <ClCompile Include="Resume.cpp" />
     <ClCompile Include="Score.cpp" />
