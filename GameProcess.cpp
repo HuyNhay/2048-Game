@@ -37,18 +37,29 @@ bool availableMove(GameBoard* board) {
 bool processVictory(
 	GameBoard*& board, 
 	States* states, 
+	List<Player>* rankings,
 	Player* player
 ) {
 	displayMainScreen(board, states, player);
 
+	// display congratulations
 	cout << "-------- VICTORY --------" << endl;
-	cout << "Congratulations! You have reached " << POW2[WIN_VALUE] << "!" << endl;
-	cout << "New game: " << COLOR_YELLOW << "N" << COLOR_RESET << endl;
-	cout << "Exit:     " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Congratulations! You have reached " << POW2[WIN_VALUE] << endl;
+
+	// display rank if player is in top 20
+	int playerRank = findPlayerRank(rankings, player);
+	if (playerRank != -1) {
+		cout << "Your rank is: " << playerRank << endl;
+	}
+
+	// display and process next possible buttons
+	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
+	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << endl;
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
-		case KEY_N:
+		case KEY_G:
 			initGrid(board, states, player);
 			return false;
 		case KEY_ESC:
@@ -56,6 +67,11 @@ bool processVictory(
 			return true;
 		case KEY_U:
 			processUndo(board, states, player);
+			return false;
+		case KEY_H:
+			rankings->update(*player);
+			processShowRankings(rankings, player);
+			displayMainScreen(board, states, player);
 			return false;
 		}
 	}
@@ -467,8 +483,11 @@ void processGamePlay(
 	int userChoice = 0;
 	while (true) {
 		if (board->isWin) {
-			if (processVictory(board, states, player)) {
+			if (processVictory(board, states, rankings, player)) {
 				return;
+			}
+			else {
+				continue;
 			}
 		}
 

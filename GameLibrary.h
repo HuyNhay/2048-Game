@@ -161,7 +161,7 @@ const char RANK_COLOR[][20] = {
 	"\033[38;2;94;79;162m",
 
 };
-const int WIN_VALUE = 11;
+const int WIN_VALUE = 3;
 
 // player
 struct Player {
@@ -240,6 +240,7 @@ int numberLength(int);
 void loadRankings(List<Player>*);
 void processShowRankings(List<Player>*, Player*);
 void saveRankings(List<Player>*, Player*);
+int findPlayerRank(List<Player>*, Player*);
 
 template <typename T>
 struct Stack {
@@ -315,7 +316,7 @@ void displayRankings(List<Player>*, Player*);
 void swap(int*, int*);
 bool availableMove(GameBoard*);
 bool processGameOver(GameBoard*&, States*, List<Player>*, Player*);
-bool processVictory(GameBoard*&, States*, Player*);
+bool processVictory(GameBoard*&, States*, List<Player>*, Player*);
 void processUp(GameBoard*, States*, Player*);
 void processDown(GameBoard*, States*, Player*);
 void processLeft(GameBoard*, States*, Player*);

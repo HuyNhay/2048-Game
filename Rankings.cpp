@@ -92,5 +92,21 @@ void processShowRankings(List<Player>* rankings, Player* player) {
 			return;
 		}
 	}
+}
 
+int findPlayerRank(List<Player>* rankings, Player* player) {
+	rankings->update(*player);
+
+	Node<Player>* curNode = rankings->head;
+	for (
+		int rank = 1;
+		curNode != nullptr;
+		curNode = curNode->next, rank++
+		) {
+		if (curNode->data.name == player->name) {
+			return rank;
+		}
+	}
+	
+	return -1;
 }
