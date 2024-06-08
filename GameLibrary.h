@@ -311,7 +311,6 @@ void displayInstruction(States*);
 void displayMainScreen(GameBoard*, States*, Player*);
 void displayRankings(List<Player>*, Player*);
 
-
 // Game Process
 void swap(int*, int*);
 bool availableMove(GameBoard*);
