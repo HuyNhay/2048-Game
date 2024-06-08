@@ -361,7 +361,7 @@ bool processQuitGame(GameBoard* board, States* states, List<Player>* rankings, P
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
-			cout << endl << COLOR_GREEN << "Exit successfully." << COLOR_RESET << endl;
+			cout << endl << COLOR_GREEN << "Exit successfully" << COLOR_RESET << endl;
 			return true;
 		}
 		case KEY_N:
@@ -491,12 +491,11 @@ void processGamePlay(
 		case KEY_RIGHT:
 			processRight(board, states, player);
 			break;
-		case KEY_N:
+		case KEY_G:
 			processNewGame(board, states, player);
 			break;
 		case KEY_ESC:
 			if (processQuitGame(board, states, rankings, player)) {
-				saveGame(board, states, rankings, player);
 				return;
 			}
 			break;

@@ -19,24 +19,14 @@ void displayInstruction(States* states) {
 	else if (states->activePrev) cout << endl;
 	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
 	cout << "Change sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
-	cout << "New game:  " << COLOR_YELLOW << "N" << COLOR_RESET << "     ";
+	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << "     ";
 	cout << "Exit:         " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
 	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 }
 
-void displayMainScreen(GameBoard* board, States* states, Player* player) {
+void displayGrid(GameBoard* board) {
 	int& width = board->width;
 	int& height = board->height;
-
-	// clear screen
-	system("CLS");
-
-	// display score and best score
-	displayScore(board, player);
-
-	cout << endl;
-
-	// display grid
 
 	insertGridBorder(board, '-');
 
@@ -62,10 +52,10 @@ void displayMainScreen(GameBoard* board, States* states, Player* player) {
 			for (int k = 0; k < leftPadding; k++) cout << " ";
 
 			if (len) cout << POW2[value];
-			
+
 			int rightPadding = CELL_LENGTH - leftPadding - len;
 			for (int k = 0; k < rightPadding; k++) cout << " ";
-			
+
 			cout << COLOR_RESET << "|";
 		}
 		cout << endl;
@@ -83,8 +73,20 @@ void displayMainScreen(GameBoard* board, States* states, Player* player) {
 		insertGridBorder(board, '-');
 	}
 
-	// display instruction
 	cout << endl;
+}
+
+void displayMainScreen(GameBoard* board, States* states, Player* player) {
+	// clear screen
+	system("CLS");
+
+	// display score and best score
+	displayScore(board, player);
+
+	// display grid
+	displayGrid(board);
+
+	// display instruction
 	displayInstruction(states);
 
 	cout << endl;

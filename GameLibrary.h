@@ -36,6 +36,7 @@ const char KEY_C = 'c';
 const char KEY_R = 'r';
 const char KEY_H = 'h';
 const char KEY_S = 's';
+const char KEY_G = 'g';
 const char KEY_M = 'm';
 const char KEY_1 = '1';
 const char KEY_2 = '2';
@@ -167,6 +168,7 @@ struct Player {
 	string name;
 	int bestScore;
 	high_resolution_clock::time_point startTime;
+	long long addedTime;
 	long long playTime;
 
 	Player();
@@ -212,17 +214,12 @@ struct ListBase {
 	int size;
 
 	ListBase();
-
 	~ListBase();
 
 	void addHead(Node<T>*);
-
 	void addTail(Node<T>*);
-
 	void addPos(int, Node<T>*);
-
 	void removeHead();
-
 	void removePos(int);
 };
 
@@ -230,48 +227,37 @@ template <typename T>
 struct List : ListBase<T> {
 };
 
-// rankings
+// Rankings
 template <>
 struct List<Player> : ListBase<Player> {
 	void removePlayer(Player);
-
 	void addPlayer(Player);
-
 	void update(Player);
-
 	void loadFromFile();
-
 	void saveToFile();
-
 	bool isEmpty() const;
-
 	void display(Player*) const;
 };
-void processShowRankings(List<Player>*, Player* player);
-
-bool checkNameExistence(List<Player>*, string);
+int numberLength(int);
+void processShowRankings(List<Player>*, Player*);
+void saveRankings(List<Player>*, Player*);
 
 template <typename T>
 struct Stack {
 	List<T>* st;
 
 	Stack();
-
 	~Stack();
 
 	void push(T);
-
 	void pushTail(T);
-
 	T top();
-
 	void pop();
-
 	int getSize();
-
 	bool isEmpty();
 };
 
+// States
 struct States {
 	bool activePrev;
 	bool activeNext;
@@ -279,24 +265,26 @@ struct States {
 	Stack<GameBoard*> next;
 
 	States();
-
 	~States();
 };
+GameBoard* copyState(GameBoard*);
+void pushState(Stack<GameBoard*>&, GameBoard*);
+void popState(Stack<GameBoard*>&);
+void clearStates(Stack<GameBoard*>&);
 
 // Lobby
 void processLobby(GameBoard*, Player*, States*, List<Player>*);
-void displayLobby(bool);
 bool processEnterPlayerName(Player*, List<Player>*);
+bool checkNameExistence(List<Player>*, string);
 void removeSpaces(string&);
 void processSettings(GameBoard*, States*);
-void displaySettings(GameBoard*, States*);
 void processChangeGridSizesLobby(GameBoard*, States*);
 void processChangeGameMode(GameBoard*, States*);
 void changeGameMode(States*, int);
 bool processResume(GameBoard*, States*, Player*, bool);
 
 // Resume
-void saveGame(GameBoard*, States*, List<Player>*, Player*);
+void saveResumeGame(GameBoard*, States*, List<Player>*, Player*);
 void savePlayer(Player*);
 void saveStates(States*);
 void saveGameBoard(GameBoard*);
@@ -310,58 +298,34 @@ void loadNextStates(States*);
 void changeGridSizes(GameBoard*, int, int);
 void initGrid(GameBoard*, States*, Player*);
 void addRandomTile(GameBoard*);
-
-//
+void updateScore(GameBoard*, Player*, const int&);
+bool maximize(int&, const int&);
 void clearMemory(GameBoard*);
 
-void deallocateGame(GameBoard*, States*, List<Player>*, Player*);
-
+// Display
+void displayLobby(bool);
+void displaySettings(GameBoard*, States*);
 void insertGridBorder(GameBoard*, char);
-
+void displayScore(GameBoard*, Player*);
+void displayGrid(GameBoard*);
 void displayInstruction(States*);
-
 void displayMainScreen(GameBoard*, States*, Player*);
 
+// Game Process
 void swap(int*, int*);
-
 bool availableMove(GameBoard*);
-
 bool processGameOver(GameBoard*&, States*, List<Player>*, Player*);
-
 bool processVictory(GameBoard*&, States*, Player*);
-
 void processUp(GameBoard*, States*, Player*);
-
 void processDown(GameBoard*, States*, Player*);
-
 void processLeft(GameBoard*, States*, Player*);
-
 void processRight(GameBoard*, States*, Player*);
-
 void processNewGame(GameBoard*, States*, Player*);
-
 bool processQuitGame(GameBoard*, States*, List<Player>*, Player*);
-
 void processChangeGridSizesMain(GameBoard*, States*, Player*);
-
 void processUndo(GameBoard*&, States*, Player*);
-
 void processRedo(GameBoard*&, States*, Player*);
-
 void processGamePlay(GameBoard*&, States*, List<Player>*, Player*);
 
-void displayScore(GameBoard*, Player*);
-
-void updateScore(GameBoard*, Player*, const int&);
-
-bool maximize(int&, const int&);
-
-GameBoard* copyState(GameBoard*);
-
-void pushState(Stack<GameBoard*>&, GameBoard*);
-
-void popState(Stack<GameBoard*>&);
-
-void clearStates(Stack<GameBoard*>&);
-
-int numberLength(int);
+// Deallocate
+void deallocateGame(GameBoard*, States*, List<Player>*, Player*);

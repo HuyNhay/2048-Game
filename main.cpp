@@ -19,6 +19,10 @@ int main() {
 	
 	processGamePlay(board, states, rankings, player);
 
+	saveRankings(rankings, player);
+
+	saveResumeGame(board, states, rankings, player);
+
 	deallocateGame(board, states, rankings, player);
 
 	return 0;

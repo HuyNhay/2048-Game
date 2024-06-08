@@ -129,13 +129,18 @@ void List<Player>::display(Player* user) const {
 	}
 }
 
+void saveRankings(List<Player>* rankings, Player* player) {
+	rankings->update(*player);
+	rankings->saveToFile();
+}
+
 void processShowRankings(List<Player>* rankings, Player* player) {
 	system("CLS");
 
 	rankings->display(player);
 
 	cout << endl << endl;
-	cout << "Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
+	cout << " Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
 
 	int userChoice = 0;
 	while (true) {

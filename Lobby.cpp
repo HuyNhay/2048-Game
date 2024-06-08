@@ -3,7 +3,8 @@
 void displayLobby(bool resumeAvailable) {
 	system("CLS");
 
-	cout << endl << endl;
+	cout << COLOR_MAGENTA << "Exit: Esc" << COLOR_RESET << endl;
+	cout << endl;
 	cout << endl << endl;
 
 	for (int i = 0; i < R; i++) {
@@ -277,14 +278,14 @@ bool processResume(GameBoard* board, States* states, Player* player, bool resume
 }
 
 void processLobby(GameBoard* board, Player* player, States* states, List<Player>* rankings) {
-	bool resumeAvailable = !rankings->isEmpty();
-	displayLobby(resumeAvailable);
+	bool resumeEnable = !rankings->isEmpty();
+	displayLobby(resumeEnable);
 
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
-		case KEY_N:
-			displayLobby(resumeAvailable);
+		case KEY_G:
+			displayLobby(resumeEnable);
 			if (processEnterPlayerName(player, rankings)) {
 				initGrid(board, states, player);
 				return;
@@ -295,18 +296,27 @@ void processLobby(GameBoard* board, Player* player, States* states, List<Player>
 			}
 		case KEY_S:
 			processSettings(board, states);
-			displayLobby(resumeAvailable);
+			displayLobby(resumeEnable);
 			break;
 		case KEY_H:
 			processShowRankings(rankings, player);
-			displayLobby(resumeAvailable);
+			displayLobby(resumeEnable);
 			break;
 		case KEY_R:
-			displayLobby(resumeAvailable);
-			if (processResume(board, states, player, resumeAvailable)) {
+			displayLobby(resumeEnable);
+			if (processResume(board, states, player, resumeEnable)) {
 				displayMainScreen(board, states, player);
 				return;
 			}
+			break;
+		case KEY_ESC:
+			displayLobby(resumeEnable);
+			cout << LONG_TAB << "\t       " << "Press " <<
+				COLOR_MAGENTA << "Esc" << COLOR_RESET << endl;
+			cout << LONG_TAB << "\t       " << COLOR_GREEN << "Exit successfully" << COLOR_RESET << endl;
+			deallocateGame(board, states, rankings, player);
+			exit(0);
+			break;
 		}
 	}
 }
