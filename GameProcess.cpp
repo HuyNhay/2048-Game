@@ -53,9 +53,15 @@ bool processVictory(
 	}
 
 	// display and process next possible buttons
+<<<<<<< HEAD
 	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
 	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
 	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << endl;
+=======
+	cout << "New game: " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
+	cout << "Exit:     " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Rankings: " << COLOR_YELLOW << "H" << COLOR_RESET << endl;
+>>>>>>> 84ea47a8914b1ecb315c7d414b31355a0c5014d0
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
