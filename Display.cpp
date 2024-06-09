@@ -57,19 +57,31 @@ void displaySettings(GameBoard* board, States* states) {
 }
 
 void displayGridBorder(GameBoard* board, char c) {
-	cout << "|";
+	cout << "+";
 	for (int j = 0; j < board->height; j++) {
 		for (int k = 0; k < CELL_LENGTH; k++) {
 			cout << c;
 		}
-		cout << "|";
+		cout << "+";
 	}
 	cout << endl;
 }
 
-void displayScore(GameBoard* board, Player* player) {
+void displayEmptyRow(GameBoard* board, int i) {
+	cout << "|";
+	for (int j = 0; j < board->height; j++) {
+		cout << BG_COLOR[board->grid[i][j]];
+		for (int k = 0; k < CELL_LENGTH; k++) {
+			cout << " ";
+		}
+		cout << COLOR_RESET << "|";
+	}
+	cout << endl;
+}
+
+void displayScore(GameBoard* board, User* user) {
 	cout << COLOR_GREEN << "SCORE:   " << board->score << COLOR_RESET << endl;
-	cout << COLOR_YELLOW << "BEST:    " << player->bestScore << COLOR_RESET << endl;
+	cout << COLOR_YELLOW << "BEST:    " << user->bestScore << COLOR_RESET << endl;
 	cout << endl;
 }
 
@@ -92,16 +104,9 @@ void displayGrid(GameBoard* board) {
 	displayGridBorder(board, '-');
 
 	for (int i = 0; i < width; i++) {
-		cout << "|";
-		for (int j = 0; j < height; j++) {
-			cout << BG_COLOR[board->grid[i][j]];
-			for (int k = 0; k < CELL_LENGTH; k++) {
-				cout << " ";
-			}
-			cout << COLOR_RESET << "|";
-		}
-		cout << endl;
+		if (width < 6) displayEmptyRow(board, i);
 
+		// display row with value of the tiles
 		cout << "|";
 		for (int j = 0; j < board->height; j++) {
 			int& value = board->grid[i][j];
@@ -121,15 +126,7 @@ void displayGrid(GameBoard* board) {
 		}
 		cout << endl;
 
-		cout << "|";
-		for (int j = 0; j < height; j++) {
-			cout << BG_COLOR[board->grid[i][j]];
-			for (int k = 0; k < CELL_LENGTH; k++) {
-				cout << " ";
-			}
-			cout << COLOR_RESET << "|";
-		}
-		cout << endl;
+		if (width < 6) displayEmptyRow(board, i);
 
 		displayGridBorder(board, '-');
 	}
@@ -137,12 +134,12 @@ void displayGrid(GameBoard* board) {
 	cout << endl;
 }
 
-void displayMainScreen(GameBoard* board, States* states, Player* player) {
+void displayMainScreen(GameBoard* board, States* states, User* user) {
 	// clear screen
 	system("CLS");
 
 	// display score and best score
-	displayScore(board, player);
+	displayScore(board, user);
 
 	// display grid
 	displayGrid(board);
@@ -153,7 +150,64 @@ void displayMainScreen(GameBoard* board, States* states, Player* player) {
 	cout << endl;
 }
 
-void displayRankings(List<Player>* rankings, Player* user) {
+void displayVictoryScreen(
+	GameBoard* board, 
+	States* states, 
+	List<Player>* rankings,
+	User* user
+) {
+	// clear screen
+	system("CLS");
+
+	// display score and best score
+	displayScore(board, user);
+
+	// display grid
+	displayGrid(board);
+
+	// display congratulations
+	cout << "-------- VICTORY --------" << endl;
+	cout << "Congratulations! You have reached " << POW2[WIN_VALUE] << endl;
+
+	// display rank if player is in top 20
+	int playerRank = findUserRank(rankings, user);
+	if (playerRank != -1) {
+		cout << "Your best rank is: " << playerRank << endl;
+	}
+
+	// display next possible buttons
+	cout << "Continue:  " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
+	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
+	cout << "Lobby:     " << COLOR_YELLOW << "L" << COLOR_RESET << endl;
+	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << endl;
+	if (states->activePrev) cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
+
+	cout << endl;
+}
+
+void displayLossScreen(GameBoard* board, States* states, User* user) {
+	// clear screen
+	system("CLS");
+
+	// display score and best score
+	displayScore(board, user);
+
+	// display grid
+	displayGrid(board);
+
+	// display next possible buttons
+	cout << "-------- GAME OVER --------" << endl;
+	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
+	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Lobby:     " << COLOR_YELLOW << "L" << COLOR_RESET << endl;
+	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << endl;
+	if (states->activePrev) cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
+
+	cout << endl;
+}
+
+void displayRankings(List<Player>* rankings, User* user) {
 	cout << "\t                 " << COLOR_GREEN << "RANKINGS" << COLOR_RESET << endl;
 	cout << endl;
 
@@ -164,7 +218,7 @@ void displayRankings(List<Player>* rankings, Player* user) {
 		cout << " ";
 	}
 
-	cout << "Score          ";
+	cout << "Best score     ";
 
 	cout << "Played Time" << endl;
 

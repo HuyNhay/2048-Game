@@ -1,26 +1,28 @@
 #include "GameLibrary.h"
 
-void savePlayer(Player* player) {
-	ofstream output("Player.txt");
+void saveUser(User* user) {
+	ofstream output("User.txt");
 	
-	output << player->name << endl;
-	output << player->bestScore << endl;
-	output << player->playTime << endl;
+	output << user->name << endl;
+	output << user->bestScore << endl;
+	output << user->continuePlay << endl;
+	output << user->playTime << endl;
 
 	output.close();
 }
 
-void loadPlayer(Player* player) {
-	ifstream input("Player.txt");
+void loadUser(User* user) {
+	ifstream input("User.txt");
 	if (!input.is_open()) {
 		return;
 	}
 
-	getline(input, player->name);
-	input >> player->bestScore;
-	input >> player->addedTime;
-	player->startTime = player->startTime = high_resolution_clock::now();
-	player->playTime = player->addedTime;
+	getline(input, user->name);
+	input >> user->bestScore;
+	input >> user->continuePlay;
+	input >> user->addedTime;
+	user->startTime = user->startTime = high_resolution_clock::now();
+	user->playTime = user->addedTime;
 
 	input.close();
 }
@@ -48,7 +50,6 @@ void saveStates(States* states) {
 				for (int j = 0; j < board->height; j++) {
 					output << board->grid[i][j] << " ";
 				}
-				//output << endl;
 			}
 			output << endl;
 
@@ -216,9 +217,9 @@ void loadNextStates(States* states) {
 void saveResumeGame(
 	GameBoard* board,
 	States* states,
-	Player* player
+	User* user
 ) {
-	savePlayer(player);
+	saveUser(user);
 	saveStates(states);
 	saveGameBoard(board);
 }

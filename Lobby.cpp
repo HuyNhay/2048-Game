@@ -1,6 +1,6 @@
 #include "GameLibrary.h"
 
-bool processEnterPlayerName(Player* player, List<Player>* rankings) {
+bool processEnterPlayerName(User* user, List<Player>* rankings) {
 	cout << LONG_TAB << "\t       " << "Pressed " << COLOR_YELLOW << "G" << COLOR_RESET
 		<< ", enter your nickname." << endl;
 	cout << LONG_TAB << "\t       " << COLOR_YELLOW << "Nickname (any unnecessary " << COLOR_RESET << endl;
@@ -29,7 +29,7 @@ bool processEnterPlayerName(Player* player, List<Player>* rankings) {
 			cout << COLOR_RESET;
 		}
 		else { // valid name
-			player->name = name;
+			user->name = name;
 			break;
 		}
 	}
@@ -40,7 +40,6 @@ void processChangeGridSizesLobby(GameBoard* board, States* states) {
 	displaySettings(board, states);
 
 	cout << " Pressed C" << endl;
-	cout << " ----------------------------------------" << endl;
 	cout << " Do you want to change grid sizes?" << endl;
 	cout << " Press " <<
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
@@ -51,9 +50,8 @@ void processChangeGridSizesLobby(GameBoard* board, States* states) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
 			displaySettings(board, states);
-			int w;
 			cout << " Pressed Y" << endl;
-			cout << " ----------------------------------------" << endl;
+			int w;
 			cout << COLOR_GREEN << " Enter number of rows: " << COLOR_RESET;
 			while (true) {
 				cin >> w;
@@ -114,7 +112,6 @@ void processChangeGameMode(GameBoard* board, States* states) {
 	displaySettings(board, states);
 
 	cout << " Pressed M" << endl;
-	cout << " ----------------------------------------" << endl;
 	cout << " Do you want to change game mode?" << endl;
 	cout << " Press " <<
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
@@ -183,7 +180,7 @@ void processSettings(GameBoard* board, States* states) {
 	}
 }
 
-bool processResume(GameBoard* board, States* states, Player* player, bool resumeAvailable) {	
+bool processResume(GameBoard* board, States* states, User* user, bool resumeAvailable) {
 	cout << LONG_TAB << "\t       " << "Pressed " << COLOR_CYAN << "R" <<COLOR_RESET << endl;
 
 	if (!resumeAvailable) {
@@ -203,7 +200,7 @@ bool processResume(GameBoard* board, States* states, Player* player, bool resume
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
-			loadPlayer(player);
+			loadUser(user);
 			loadStatesActiveStatus(states);
 			loadGameBoard(board);
 			if (states->activePrev) {
@@ -222,46 +219,64 @@ bool processResume(GameBoard* board, States* states, Player* player, bool resume
 	}
 }
 
-void processLobby(GameBoard* board, Player* player, States* states, List<Player>* rankings) {
+void processLobby(GameBoard* board, User* user, States* states, List<Player>* rankings) {
 	bool resumeEnable = !rankings->isEmpty();
 	displayLobby(resumeEnable);
 
 	int userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
+
 		case KEY_G:
 			displayLobby(resumeEnable);
-			if (processEnterPlayerName(player, rankings)) {
-				initGrid(board, states, player);
-				return;
+			if (processEnterPlayerName(user, rankings)) {
+				initGrid(board, states, user);
+				switch (processGamePlay(board, states, rankings, user)) {
+				case CONTINUE:
+					displayLobby(resumeEnable);
+					break;
+				case EXIT:
+					deallocateGame(board, states, rankings, user);
+					return;
+				}
 			}
 			else {
-				deallocateGame(board, states, rankings, player);
-				exit(0);
+				deallocateGame(board, states, rankings, user);
+				return;
 			}
+			break;
+
 		case KEY_S:
 			processSettings(board, states);
 			displayLobby(resumeEnable);
 			break;
+
 		case KEY_H:
-			processShowRankings(rankings, player);
+			processShowRankings(rankings, user);
 			displayLobby(resumeEnable);
 			break;
+
 		case KEY_R:
 			displayLobby(resumeEnable);
-			if (processResume(board, states, player, resumeEnable)) {
-				displayMainScreen(board, states, player);
-				return;
+			if (processResume(board, states, user, resumeEnable)) {
+				displayMainScreen(board, states, user);
+				switch (processGamePlay(board, states, rankings, user)) {
+				case CONTINUE:
+					displayLobby(resumeEnable);
+					break;
+				case EXIT:
+					return;
+				}
 			}
 			break;
+
 		case KEY_ESC:
 			displayLobby(resumeEnable);
 			cout << LONG_TAB << "\t       " << "Press " <<
 				COLOR_MAGENTA << "Esc" << COLOR_RESET << endl;
 			cout << LONG_TAB << "\t       " << COLOR_GREEN << "Exit successfully" << COLOR_RESET << endl;
-			deallocateGame(board, states, rankings, player);
-			exit(0);
-			break;
+			deallocateGame(board, states, rankings, user);
+			return;
 		}
 	}
 }

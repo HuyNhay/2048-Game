@@ -60,6 +60,9 @@
     <ClCompile Include="Resume.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLibrary.h">
@@ -75,7 +78,7 @@
     <Text Include="Board.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Player.txt">
+    <Text Include="User.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Ranks.txt">

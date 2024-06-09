@@ -1,40 +1,45 @@
 #include "GameLibrary.h"
 
-void List<Player>::removePlayer(Player player) {
+void List<Player>::removePlayer(User user) {
 	Node<Player>* curNode = head;
 	for (
 		int i = 0;
 		curNode != nullptr;
 		curNode = curNode->next, i++
 		) {
-		if (curNode->data.name == player.name) {
+		if (curNode->data.name == user.name) {
 			removePos(i);
 			return;
 		}
 	}
 }
 
-void List<Player>::addPlayer(Player player) {
+void List<Player>::addPlayer(User user) {
 	Node<Player>* curNode = head;
 	for (
 		int i = 0;
 		curNode != nullptr;
 		curNode = curNode->next, i++
 		) {
-		if (curNode->data.bestScore > player.bestScore) continue;
+		if (curNode->data.bestScore > user.bestScore) continue;
 		if (
-			curNode->data.bestScore == player.bestScore &&
-			curNode->data.name < player.name
+			curNode->data.bestScore == user.bestScore &&
+			curNode->data.name < user.name
 			) continue;
-		addPos(i, new Node<Player>(player));
+		if (
+			curNode->data.bestScore == user.bestScore &&
+			curNode->data.name == user.name &&
+			curNode->data.playTime < user.playTime
+			) continue;
+		addPos(i, new Node<Player>(Player(user)));
 		return;
 	}
-	addTail(new Node<Player>(player));
+	addTail(new Node<Player>(Player(user)));
 }
 
-void List<Player>::update(Player player) {
-	removePlayer(player);
-	addPlayer(player);
+void List<Player>::update(User user) {
+	removePlayer(user);
+	addPlayer(user);
 	while (size > 20) {
 		removePos(size - 1);
 	}
@@ -47,7 +52,7 @@ void List<Player>::saveToFile() {
 		curNode != nullptr;
 		curNode = curNode->next
 		) {
-		curNode->data.writeToFile(output);
+		savePlayer(output, curNode->data);
 	}
 	output.close();
 
@@ -72,15 +77,15 @@ void loadRankings(List<Player>* rankings) {
 	input.close();
 }
 
-void saveRankings(List<Player>* rankings, Player* player) {
-	rankings->update(*player);
+void saveRankings(List<Player>* rankings, User* user) {
+	rankings->update(*user);
 	rankings->saveToFile();
 }
 
-void processShowRankings(List<Player>* rankings, Player* player) {
+void processShowRankings(List<Player>* rankings, User* user) {
 	system("CLS");
 
-	displayRankings(rankings, player);
+	displayRankings(rankings, user);
 
 	cout << endl << endl;
 	cout << " Press " << COLOR_YELLOW << "Space " << COLOR_RESET << "to continue game..." << endl;
@@ -94,8 +99,8 @@ void processShowRankings(List<Player>* rankings, Player* player) {
 	}
 }
 
-int findPlayerRank(List<Player>* rankings, Player* player) {
-	rankings->update(*player);
+int findUserRank(List<Player>* rankings, User* user) {
+	rankings->update(*user);
 
 	Node<Player>* curNode = rankings->head;
 	for (
@@ -103,7 +108,7 @@ int findPlayerRank(List<Player>* rankings, Player* player) {
 		curNode != nullptr;
 		curNode = curNode->next, rank++
 		) {
-		if (curNode->data.name == player->name) {
+		if (curNode->data.name == user->name) {
 			return rank;
 		}
 	}

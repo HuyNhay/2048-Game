@@ -5,7 +5,7 @@ using namespace std;
 int main() {
 	srand((unsigned int)time(NULL));
 
-	Player* player = new Player();
+	User* user = new User();
 
 	GameBoard* board = new GameBoard();
 	changeGridSizes(board, 4, 4);
@@ -15,16 +15,8 @@ int main() {
 	List<Player>* rankings = new List<Player>();
 	loadRankings(rankings);
 
-	processLobby(board, player, states, rankings);
+	processLobby(board, user, states, rankings);
 	
-	processGamePlay(board, states, rankings, player);
-
-	saveRankings(rankings, player);
-
-	saveResumeGame(board, states, player);
-
-	deallocateGame(board, states, rankings, player);
-
 	return 0;
 }
 

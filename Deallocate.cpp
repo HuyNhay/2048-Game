@@ -21,10 +21,10 @@ void deallocateGame(
 	GameBoard* board, 
 	States* states, 
 	List<Player>* rankings, 
-	Player* player
+	User* user
 ) {
 	delete board;
 	delete states;
 	delete rankings;
-	delete player;
+	delete user;
 }

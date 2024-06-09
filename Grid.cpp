@@ -12,12 +12,13 @@ void changeGridSizes(GameBoard* board, int width, int height) {
 	}
 }
 
-void initGrid(GameBoard* board, States* states, Player* player) {
+void initGrid(GameBoard* board, States* states, User* user) {
 	if (states->activePrev) clearStates(states->prev);
 	if (states->activeNext) clearStates(states->next);
 
-	player->startTime = high_resolution_clock::now();
-	player->addedTime = 0;
+	user->startTime = high_resolution_clock::now();
+	user->addedTime = 0;
+	user->continuePlay = false;
 
 	board->isWin = 0;
 	for (int i = 0; i < board->width; i++) {
@@ -31,7 +32,7 @@ void initGrid(GameBoard* board, States* states, Player* player) {
 	addRandomTile(board);
 	addRandomTile(board);
 
-	displayMainScreen(board, states, player);
+	displayMainScreen(board, states, user);
 }
 
 void addRandomTile(GameBoard* board) {

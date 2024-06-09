@@ -37,15 +37,20 @@ const char KEY_R = 'r';
 const char KEY_H = 'h';
 const char KEY_S = 's';
 const char KEY_G = 'g';
+const char KEY_L = 'l';
 const char KEY_M = 'm';
 const char KEY_1 = '1';
 const char KEY_2 = '2';
 const char KEY_3 = '3';
+const int CONTINUE = 111;
+const int LOBBY = 222;
+const int EXIT = 333;
 const int CELL_LENGTH = 7;
 const int NAME_LENGTH = 23;
 const int SCORE_LENGTH = 16;
 const int R = 12;
 const int C = 13;
+const int WIN_VALUE = 11;
 const char ZERO[R][C] = {
 	"************",
 	"************",
@@ -138,52 +143,50 @@ const char FONT_COLOR[][20] = {
 };
 const char RANK_COLOR[][20] = {
 	"",
-	"\033[38;2;158;1;66m",
-	"\033[38;2;213;62;79m",
-	"\033[38;2;244;109;67m",
-	"\033[38;2;253;174;97m",
-	"\033[38;2;254;224;139m",
-	"\033[38;2;230;245;152m",
-	"\033[38;2;171;221;164m",
-	"\033[38;2;102;194;165m",
-	"\033[38;2;50;136;189m",
-	"\033[38;2;94;79;162m",
+	"\033[38;2;231;29;67m",
+	"\033[38;2;255;0;0m",
+	"\033[38;2;255;55;0m",
+	"\033[38;2;255;110;0m",
+	"\033[38;2;255;165;0m",
+	"\033[38;2;255;195;0m",
+	"\033[38;2;255;225;0m",
+	"\033[38;2;255;255;0m",
+	"\033[38;2;170;213;0m",
+	"\033[38;2;100;187;106m",
 
-	"\033[38;2;158;1;66m",
-	"\033[38;2;213;62;79m",
-	"\033[38;2;244;109;67m",
-	"\033[38;2;253;174;97m",
-	"\033[38;2;254;224;139m",
-	"\033[38;2;230;245;152m",
-	"\033[38;2;171;221;164m",
-	"\033[38;2;102;194;165m",
-	"\033[38;2;50;136;189m",
-	"\033[38;2;94;79;162m",
+	"\033[38;2;85;170;0m",
+	"\033[38;2;0;128;0m",
+	"\033[38;2;22;138;173m",
+	"\033[38;2;0;0;255m",
+	"\033[38;2;25;0;200m",
+	"\033[38;2;55;10;160m",
+	"\033[38;2;129;43;166m",
+	"\033[35m",
+	"\033[38;2;184;87;202m",
+	"\033[38;2;180;58;135m",
 
 };
-const int WIN_VALUE = 3;
 
-// player
-struct Player {
+// User
+struct User {
 	string name;
 	int bestScore;
+	bool continuePlay;
 	high_resolution_clock::time_point startTime;
 	long long addedTime;
 	long long playTime;
 
-	Player();
+	User();
 
-	Player(string, int, long long);
+	User(string, int, bool, long long, long long);
 
-	~Player();
+	~User();
 
-	void operator=(const Player&);
-
-	void writeToFile(ofstream&) const;
-
-	void print() const;
+	void operator=(const User&);
 };
 
+
+// Game board
 struct GameBoard {
 	int **grid;
 	int width;
@@ -196,6 +199,7 @@ struct GameBoard {
 	~GameBoard();
 };
 
+// Node
 template <typename T>
 struct Node {
 	T data;
@@ -208,6 +212,25 @@ struct Node {
 	~Node();
 };
 
+// Player
+struct Player {
+	string name;
+	int bestScore;
+	long long playTime;
+
+	Player();
+
+	Player(string, int, long long);
+
+	Player(const User&);
+
+	~Player();
+
+	void operator=(const Player&);
+};
+void savePlayer(ofstream&, Player);
+
+// Linked List
 template <typename T>
 struct ListBase {
 	Node<T>* head;
@@ -222,7 +245,6 @@ struct ListBase {
 	void removeHead();
 	void removePos(int);
 };
-
 template <typename T>
 struct List : ListBase<T> {
 };
@@ -230,18 +252,19 @@ struct List : ListBase<T> {
 // Rankings
 template <>
 struct List<Player> : ListBase<Player> {
-	void removePlayer(Player);
-	void addPlayer(Player);
-	void update(Player);
+	void removePlayer(User);
+	void addPlayer(User);
+	void update(User);
 	void saveToFile();
 	bool isEmpty() const;
 };
 int numberLength(int);
 void loadRankings(List<Player>*);
-void processShowRankings(List<Player>*, Player*);
-void saveRankings(List<Player>*, Player*);
-int findPlayerRank(List<Player>*, Player*);
+void processShowRankings(List<Player>*, User*);
+void saveRankings(List<Player>*, User*);
+int findUserRank(List<Player>*, User*);
 
+// Stack
 template <typename T>
 struct Stack {
 	List<T>* st;
@@ -273,22 +296,22 @@ void popState(Stack<GameBoard*>&);
 void clearStates(Stack<GameBoard*>&);
 
 // Lobby
-void processLobby(GameBoard*, Player*, States*, List<Player>*);
-bool processEnterPlayerName(Player*, List<Player>*);
+void processLobby(GameBoard*, User*, States*, List<Player>*);
+bool processEnterPlayerName(User*, List<Player>*);
 bool checkNameExistence(List<Player>*, string);
 void removeSpaces(string&);
 void processSettings(GameBoard*, States*);
 void processChangeGridSizesLobby(GameBoard*, States*);
 void processChangeGameMode(GameBoard*, States*);
 void changeGameMode(States*, int);
-bool processResume(GameBoard*, States*, Player*, bool);
+bool processResume(GameBoard*, States*, User*, bool);
 
 // Resume
-void saveResumeGame(GameBoard*, States*, Player*);
-void savePlayer(Player*);
+void saveResumeGame(GameBoard*, States*, User*);
+void saveUser(User*);
 void saveStates(States*);
 void saveGameBoard(GameBoard*);
-void loadPlayer(Player*);
+void loadUser(User*);
 void loadStatesActiveStatus(States*);
 void loadGameBoard(GameBoard*);
 void loadPrevStates(States*);
@@ -296,9 +319,9 @@ void loadNextStates(States*);
 
 // Grid
 void changeGridSizes(GameBoard*, int, int);
-void initGrid(GameBoard*, States*, Player*);
+void initGrid(GameBoard*, States*, User*);
 void addRandomTile(GameBoard*);
-void updateScore(GameBoard*, Player*, const int&);
+void updateScore(GameBoard*, User*, const int&);
 bool maximize(int&, const int&);
 void clearMemory(GameBoard*);
 
@@ -306,27 +329,30 @@ void clearMemory(GameBoard*);
 void displayLobby(bool);
 void displaySettings(GameBoard*, States*);
 void displayGridBorder(GameBoard*, char);
-void displayScore(GameBoard*, Player*);
+void displayEmptyRow(GameBoard*, int);
+void displayScore(GameBoard*, User*);
 void displayGrid(GameBoard*);
 void displayInstruction(States*);
-void displayMainScreen(GameBoard*, States*, Player*);
-void displayRankings(List<Player>*, Player*);
+void displayMainScreen(GameBoard*, States*, User*);
+void displayVictoryScreen(GameBoard*, States*, List<Player>*, User*);
+void displayLossScreen(GameBoard*, States*, User*);
+void displayRankings(List<Player>*, User*);
 
 // Game Process
 void swap(int*, int*);
 bool availableMove(GameBoard*);
-bool processGameOver(GameBoard*&, States*, List<Player>*, Player*);
-bool processVictory(GameBoard*&, States*, List<Player>*, Player*);
-void processUp(GameBoard*, States*, Player*);
-void processDown(GameBoard*, States*, Player*);
-void processLeft(GameBoard*, States*, Player*);
-void processRight(GameBoard*, States*, Player*);
-void processNewGame(GameBoard*, States*, Player*);
-bool processQuitGame(GameBoard*, States*, List<Player>*, Player*);
-void processChangeGridSizesMain(GameBoard*, States*, Player*);
-void processUndo(GameBoard*&, States*, Player*);
-void processRedo(GameBoard*&, States*, Player*);
-void processGamePlay(GameBoard*&, States*, List<Player>*, Player*);
+int processGameOver(GameBoard*&, States*, List<Player>*, User*);
+int processVictory(GameBoard*&, States*, List<Player>*, User*);
+void processUp(GameBoard*, States*, User*);
+void processDown(GameBoard*, States*, User*);
+void processLeft(GameBoard*, States*, User*);
+void processRight(GameBoard*, States*, User*);
+void processNewGame(GameBoard*, States*, User*);
+bool processQuitGame(GameBoard*, States*, List<Player>*, User*);
+void processChangeGridSizesMain(GameBoard*, States*, User*);
+void processUndo(GameBoard*&, States*, User*);
+void processRedo(GameBoard*&, States*, User*);
+int processGamePlay(GameBoard*&, States*, List<Player>*, User*);
 
 // Deallocate
-void deallocateGame(GameBoard*, States*, List<Player>*, Player*);
+void deallocateGame(GameBoard*, States*, List<Player>*, User*);
