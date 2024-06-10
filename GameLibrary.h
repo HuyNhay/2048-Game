@@ -338,7 +338,7 @@ void displayVictoryScreen(GameBoard*, States*, List<Player>*, User*);
 void displayLossScreen(GameBoard*, States*, User*);
 void displayRankings(List<Player>*, User*);
 
-// Game Process
+// Game Play
 void swap(int*, int*);
 bool availableMove(GameBoard*);
 int processGameOver(GameBoard*&, States*, List<Player>*, User*);

@@ -569,6 +569,11 @@ int processGamePlay(
 			processShowRankings(rankings, user);
 			displayMainScreen(board, states, user);
 			break;
+		case KEY_L:
+			saveRankings(rankings, user);
+			saveResumeGame(board, states, user);
+			*user = User("", 0, false, 0, 0);
+			return CONTINUE;
 		}
 	}
 }

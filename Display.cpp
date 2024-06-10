@@ -93,7 +93,8 @@ void displayInstruction(States* states) {
 	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
 	cout << "Change sizes: " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
 	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << "     ";
-	cout << "Exit:         " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Lobby:        " << COLOR_YELLOW << "L" << COLOR_RESET << endl;
+	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
 	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 }
 
@@ -176,12 +177,13 @@ void displayVictoryScreen(
 	}
 
 	// display next possible buttons
-	cout << "Continue:  " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
-	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
-	cout << "Lobby:     " << COLOR_YELLOW << "L" << COLOR_RESET << endl;
-	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
-	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << endl;
 	if (states->activePrev) cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
+	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
+	cout << "Continue:     " << COLOR_YELLOW << "C" << COLOR_RESET << endl;
+	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << "     ";
+	cout << "Lobby:        " << COLOR_YELLOW << "L" << COLOR_RESET << endl;
+	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 
 	cout << endl;
 }
@@ -198,11 +200,12 @@ void displayLossScreen(GameBoard* board, States* states, User* user) {
 
 	// display next possible buttons
 	cout << "-------- GAME OVER --------" << endl;
-	cout << "New game:  " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
-	cout << "Exit:      " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
-	cout << "Lobby:     " << COLOR_YELLOW << "L" << COLOR_RESET << endl;
-	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << endl;
 	if (states->activePrev) cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << endl;
+	cout << "Rankings:  " << COLOR_YELLOW << "H" << COLOR_RESET << "     ";
+	cout << "New game:     " << COLOR_YELLOW << "G" << COLOR_RESET << endl;
+	cout << "Lobby:     " << COLOR_YELLOW << "L" << COLOR_RESET << "     ";
+	cout << "Exit:         " << COLOR_YELLOW << "Esc" << COLOR_RESET << endl;
+	cout << "Remember to " << COLOR_RED << "exit game " << COLOR_RESET << "before closing the console!!!" << endl;
 
 	cout << endl;
 }
