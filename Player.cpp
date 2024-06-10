@@ -6,7 +6,7 @@ Player::Player() {
 	playTime = 0;
 }
 
-Player::Player(string _name, int _bestScore, long long _playTime) {
+Player::Player(string _name, int _bestScore, int _playTime) {
 	name = _name;
 	bestScore = _bestScore;
 	playTime = _playTime;
@@ -30,9 +30,13 @@ void Player::operator=(const Player& other) {
 	playTime = other.playTime;
 }
 
-void savePlayer(ofstream& output, Player player) {
-	output << player.name << endl;
-	output << player.bestScore << endl;
-	output << player.playTime << endl;
+void saveRankPlayer(ofstream& output, Player player) {
+	// write name
+	int nameLength = (int)player.name.length();
+	output.write((char*)&nameLength, sizeof(int));
+	output.write(player.name.c_str(), nameLength);
 
+	// write best score and time
+	output.write((char*)&player.bestScore, sizeof(int));
+	output.write((char*)&player.playTime, sizeof(int));
 }

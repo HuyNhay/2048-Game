@@ -149,14 +149,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Board.txt" />
-    <Text Include="NextStates.txt" />
-    <Text Include="User.txt" />
-    <Text Include="PreviousStates.txt" />
-    <Text Include="Ranks.txt" />
-    <Text Include="StatesActive.txt" />
+    <None Include="Board.bin" />
+    <None Include="NextStates.bin" />
+    <None Include="PreviousStates.bin" />
+    <None Include="Ranks.bin" />
+    <None Include="StatesActive.bin" />
+    <None Include="User.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

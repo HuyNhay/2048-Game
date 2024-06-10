@@ -1,57 +1,75 @@
 #include "GameLibrary.h"
 
 void saveUser(User* user) {
-	ofstream output("User.txt");
+	ofstream output("User.bin", ios::binary);
 	
-	output << user->name << endl;
-	output << user->bestScore << endl;
-	output << user->continuePlay << endl;
-	output << user->playTime << endl;
+	// write name
+	int nameLength = (int)user->name.length();
+	output.write((char*)&nameLength, sizeof(int));
+	output.write(user->name.c_str(), nameLength);
+
+	// write score, continuePlay, time
+	output.write((char*)&user->bestScore, sizeof(int));
+	output.write((char*)&user->continuePlay, sizeof(bool));
+	output.write((char*)&user->playTime, sizeof(int));
 
 	output.close();
 }
 
 void loadUser(User* user) {
-	ifstream input("User.txt");
+	ifstream input("User.bin", ios::binary);
 	if (!input.is_open()) {
 		return;
 	}
 
-	getline(input, user->name);
-	input >> user->bestScore;
-	input >> user->continuePlay;
-	input >> user->addedTime;
-	user->startTime = user->startTime = high_resolution_clock::now();
+	// read name
+	int nameLength = 0;
+	input.read((char*)&nameLength, sizeof(int));
+	char* buffer = new char[nameLength];
+	input.read(buffer, nameLength);
+	user->name = "";
+	user->name.append(buffer, nameLength);
+	delete[] buffer;
+
+	// read score, continuePlay, time
+	input.read((char*)&user->bestScore, sizeof(int));
+	input.read((char*)&user->continuePlay, sizeof(bool));
+	input.read((char*)&user->addedTime, sizeof(int));
+
+	user->startTime = high_resolution_clock::now();
 	user->playTime = user->addedTime;
 
 	input.close();
 }
 
 void saveStates(States* states) {
-	ofstream output("StatesActive.txt");
+	ofstream output("StatesActive.bin", ios::binary);
 	
-	output << states->activePrev << endl;
-	output << states->activeNext << endl;
+	output.write((char*)&states->activePrev, sizeof(bool));
+	output.write((char*)&states->activeNext, sizeof(bool));
 
 	output.close();
 
 	if (states->activePrev) {
-		output.open("PreviousStates.txt");
+		output.open("PreviousStates.bin", ios::binary);
+		
+		int size = states->prev.getSize();
+		output.write((char*)&size, sizeof(int));
+
 		GameBoard* board = nullptr;
 		while (states->prev.getSize()) {
 			board = states->prev.top();
 			
-			output << board->width << endl;
-			output << board->height << endl;
-			output << board->score << endl;
-			output << board->isWin << endl;
+			output.write((char*)&board->width, sizeof(int));
+			output.write((char*)&board->height, sizeof(int));
+			output.write((char*)&board->score, sizeof(int));
+			output.write((char*)&board->isWin, sizeof(bool));
 
 			for (int i = 0; i < board->width; i++) {
 				for (int j = 0; j < board->height; j++) {
-					output << board->grid[i][j] << " ";
+					output.write((char*)&board->grid[i][j], sizeof(int));
 				}
 			}
-			output << endl;
 
 			states->prev.pop();
 
@@ -61,22 +79,25 @@ void saveStates(States* states) {
 	}
 
 	if (states->activeNext) {
-		output.open("NextStates.txt");
+		output.open("NextStates.bin", ios::binary);
+
+		int size = states->next.getSize();
+		output.write((char*)&size, sizeof(int));
+
 		GameBoard* board = nullptr;
 		while (states->next.getSize()) {
 			board = states->next.top();
 
-			output << board->width << endl;
-			output << board->height << endl;
-			output << board->score << endl;
-			output << board->isWin << endl;
+			output.write((char*)&board->width, sizeof(int));
+			output.write((char*)&board->height, sizeof(int));
+			output.write((char*)&board->score, sizeof(int));
+			output.write((char*)&board->isWin, sizeof(bool));
 
 			for (int i = 0; i < board->width; i++) {
 				for (int j = 0; j < board->height; j++) {
-					output << board->grid[i][j] << " ";
+					output.write((char*)&board->grid[i][j], sizeof(int));
 				}
 			}
-			output << endl;
 
 			states->next.pop();
 
@@ -87,55 +108,55 @@ void saveStates(States* states) {
 }
 
 void loadStatesActiveStatus(States* states) {
-	ifstream input("StatesActive.txt");
+	ifstream input("StatesActive.bin", ios::binary);
 	if (!input.is_open()) {
 		return;
 	}
 
-	input >> states->activePrev;
-	input >> states->activeNext;
+	input.read((char*)&states->activePrev, sizeof(int));
+	input.read((char*)&states->activeNext, sizeof(int));
 
 	input.close();
 }
 
 void saveGameBoard(GameBoard* board) {
-	ofstream output("Board.txt");
+	ofstream output("Board.bin", ios::binary);
 
-	output << board->width << endl;
-	output << board->height << endl;
-	output << board->score << endl;
-	output << board->isWin << endl;
+	output.write((char*)&board->width, sizeof(int));
+	output.write((char*)&board->height, sizeof(int));
+	output.write((char*)&board->score, sizeof(int));
+	output.write((char*)&board->isWin, sizeof(bool));
 
 	for (int i = 0; i < board->width; i++) {
 		for (int j = 0; j < board->height; j++) {
-			output << board->grid[i][j] << " ";
+			output.write((char*)&board->grid[i][j], sizeof(int));
 		}
-		output << endl;
 	}
 
 	output.close();
 }
 
 void loadGameBoard(GameBoard* board) {
-	ifstream input("Board.txt");
+	ifstream input("Board.bin", ios::binary);
 	if (!input.is_open()) {
 		return;
 	}
 
 	clearMemory(board);
 
-	input >> board->width;
-	input >> board->height;
-	input >> board->score;
-	input >> board->isWin;
+	input.read((char*)&board->width, sizeof(int));
+	input.read((char*)&board->height, sizeof(int));
+	input.read((char*)&board->score, sizeof(int));
+	input.read((char*)&board->isWin, sizeof(bool));
 
 	board->grid = new int* [board->width];
 	for (int i = 0; i < board->width; i++) {
 		board->grid[i] = new int[board->height];
 	}
+
 	for (int i = 0; i < board->width; i++) {
 		for (int j = 0; j < board->height; j++) {
-			input >> board->grid[i][j];
+			input.read((char*)&board->grid[i][j], sizeof(int));
 		}
 	}
 
@@ -143,74 +164,72 @@ void loadGameBoard(GameBoard* board) {
 }
 
 void loadPrevStates(States* states) {
-	ifstream input("PreviousStates.txt");
+	ifstream input("PreviousStates.bin", ios::binary);
 	if (!input.is_open()) {
 		return;
 	}
 
-	while (true) {
+	// read size
+	int size = 0;
+	input.read((char*)&size, sizeof(int));
+
+	while (size--) {
 		GameBoard* board = new GameBoard();
-		if (
-			input >> board->width &&
-			input >> board->height && 
-			input >> board->score &&
-			input >> board->isWin
-			) {
 
-			board->grid = new int* [board->width];
-			for (int i = 0; i < board->width; i++) {
-				board->grid[i] = new int[board->height];
-			}
+		input.read((char*)&board->width, sizeof(int));
+		input.read((char*)&board->height, sizeof(int));
+		input.read((char*)&board->score, sizeof(int));
+		input.read((char*)&board->isWin, sizeof(bool));
 
-			for (int i = 0; i < board->width; i++) {
-				for (int j = 0; j < board->height; j++) {
-					input >> board->grid[i][j];
-				}
-			}
-
-			states->prev.pushTail(board);
+		board->grid = new int* [board->width];
+		for (int i = 0; i < board->width; i++) {
+			board->grid[i] = new int[board->height];
 		}
-		else {
-			delete board;
-			break;
+
+		for (int i = 0; i < board->width; i++) {
+			for (int j = 0; j < board->height; j++) {
+				input.read((char*)&board->grid[i][j], sizeof(int));
+			}
 		}
+		
+		states->prev.pushTail(board);
 	}
+
 	input.close();
 }
 
 void loadNextStates(States* states) {
-	ifstream input("NextStates.txt");
+	ifstream input("NextStates.bin", ios::binary);
 	if (!input.is_open()) {
 		return;
 	}
 
-	while (true) {
+	// read size
+	int size = 0;
+	input.read((char*)&size, sizeof(int));
+
+	while (size--) {
 		GameBoard* board = new GameBoard();
-		if (
-			input >> board->width &&
-			input >> board->height &&
-			input >> board->score &&
-			input >> board->isWin
-			) {
 
-			board->grid = new int* [board->width];
-			for (int i = 0; i < board->width; i++) {
-				board->grid[i] = new int[board->height];
-			}
+		input.read((char*)&board->width, sizeof(int));
+		input.read((char*)&board->height, sizeof(int));
+		input.read((char*)&board->score, sizeof(int));
+		input.read((char*)&board->isWin, sizeof(bool));
 
-			for (int i = 0; i < board->width; i++) {
-				for (int j = 0; j < board->height; j++) {
-					input >> board->grid[i][j];
-				}
-			}
-
-			states->next.pushTail(board);
+		board->grid = new int* [board->width];
+		for (int i = 0; i < board->width; i++) {
+			board->grid[i] = new int[board->height];
 		}
-		else {
-			delete board;
-			break;
+
+		for (int i = 0; i < board->width; i++) {
+			for (int j = 0; j < board->height; j++) {
+				input.read((char*)&board->grid[i][j], sizeof(int));
+			}
 		}
+
+		states->next.pushTail(board);
 	}
+
 	input.close();
 }
 

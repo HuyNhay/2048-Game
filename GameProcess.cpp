@@ -383,13 +383,14 @@ bool processQuitGame(GameBoard* board, States* states, List<Player>* rankings, U
 	cout << "Press " <<
 		COLOR_YELLOW << "Y " << COLOR_RESET << "to confirm, " <<
 		COLOR_YELLOW << "N " << COLOR_RESET << "to cancel." << endl;
+	cout << endl;
 
 	char userChoice = 0;
 	while (true) {
 		switch (userChoice = _getch()) {
 		case KEY_Y: {
 			cout << "Pressed Y" << endl;
-			cout << endl << COLOR_GREEN << "Exit successfully" << COLOR_RESET << endl;
+			cout << COLOR_GREEN << "Exit successfully" << COLOR_RESET << endl;
 			return true;
 		}
 		case KEY_N:

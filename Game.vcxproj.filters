@@ -73,25 +73,23 @@
     <None Include=".gitignore">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Board.txt">
+    <None Include="Board.bin">
       <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="User.txt">
+    </None>
+    <None Include="NextStates.bin">
       <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Ranks.txt">
+    </None>
+    <None Include="PreviousStates.bin">
       <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="StatesActive.txt">
+    </None>
+    <None Include="StatesActive.bin">
       <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="PreviousStates.txt">
+    </None>
+    <None Include="User.bin">
       <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="NextStates.txt">
+    </None>
+    <None Include="Ranks.bin">
       <Filter>Resource Files</Filter>
-    </Text>
+    </None>
   </ItemGroup>
 </Project>

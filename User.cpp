@@ -8,7 +8,7 @@ User::User() {
 	playTime = 0;
 }
 
-User::User(string _name, int _bestScore, bool _continuePlay, long long _addedTime, long long _playTime) {
+User::User(string _name, int _bestScore, bool _continuePlay, int _addedTime, int _playTime) {
 	name = _name;
 	bestScore = _bestScore;
 	continuePlay = _continuePlay;

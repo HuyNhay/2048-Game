@@ -173,12 +173,12 @@ struct User {
 	int bestScore;
 	bool continuePlay;
 	high_resolution_clock::time_point startTime;
-	long long addedTime;
-	long long playTime;
+	int addedTime;
+	int playTime;
 
 	User();
 
-	User(string, int, bool, long long, long long);
+	User(string, int, bool, int, int);
 
 	~User();
 
@@ -216,11 +216,11 @@ struct Node {
 struct Player {
 	string name;
 	int bestScore;
-	long long playTime;
+	int playTime;
 
 	Player();
 
-	Player(string, int, long long);
+	Player(string, int, int);
 
 	Player(const User&);
 
@@ -228,7 +228,7 @@ struct Player {
 
 	void operator=(const Player&);
 };
-void savePlayer(ofstream&, Player);
+void saveRankPlayer(ofstream&, Player);
 
 // Linked List
 template <typename T>
