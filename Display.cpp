@@ -1,12 +1,20 @@
 ﻿#include "GameLibrary.h"
 
-void displayLobby(bool resumeAvailable) {
-	system("CLS");
-
-	cout << COLOR_MAGENTA << "Exit: Esc" << COLOR_RESET << endl;
-	cout << endl;
+void displayLobbyInstruction(bool resumeAvailable) {
+	cout << TAB << "       ";
+	cout << COLOR_YELLOW << "New game: G" << COLOR_RESET;
+	cout << TAB << "|" << TAB;
+	cout << COLOR_GREEN << "Settings: S" << COLOR_RESET;
+	cout << TAB << "|" << TAB;
+	cout << COLOR_RED << "Rankings: H" << COLOR_RESET;
+	cout << TAB << "|" << TAB;
+	cout << COLOR_CYAN << "Resume: R ";
+	if (!resumeAvailable) cout << "(Error)";
+	cout << COLOR_RESET;
 	cout << endl << endl;
+}
 
+void displayLobbyBanner() {
 	for (int i = 0; i < R; i++) {
 		cout << LONG_TAB << " ";
 		cout << COLOR_YELLOW << TWO[i] << "\t";
@@ -18,20 +26,18 @@ void displayLobby(bool resumeAvailable) {
 
 	cout << endl;
 	cout << LONG_TAB << LONG_TAB << "\t\t\t\t" << "--- Remade By HUYDEPTRAIVKL ---";
-	cout << endl << endl << endl;
-
-	cout << TAB << "       ";
-	cout << COLOR_YELLOW << "New game: G" << COLOR_RESET;
-	cout << TAB << "|" << TAB;
-	cout << COLOR_GREEN << "Settings: S" << COLOR_RESET;
-	cout << TAB << "|" << TAB;
-	cout << COLOR_RED << "Rankings: H" << COLOR_RESET;
-	cout << TAB << "|" << TAB;
-	cout << COLOR_CYAN << "Resume: R ";
-	if (!resumeAvailable) cout << "(Error)";
-	cout << COLOR_RESET;
-	cout << endl;
 	cout << endl << endl;
+}
+
+void displayLobby(bool resumeAvailable) {
+	system("CLS");
+
+	cout << COLOR_MAGENTA << "Exit: Esc" << COLOR_RESET << endl;
+	cout << endl << endl;
+
+	displayLobbyBanner();
+
+	displayLobbyInstruction(resumeAvailable);
 }
 
 void displaySettings(GameBoard* board, States* states) {
@@ -54,6 +60,48 @@ void displaySettings(GameBoard* board, States* states) {
 	cout << " Change game mode:  " << COLOR_YELLOW << "M" << COLOR_RESET << endl;
 	cout << " Back to lobby:     " << COLOR_YELLOW << "Space" << COLOR_RESET << endl;
 	cout << endl << endl;
+}
+
+void displayAccounts(User* user) {
+	cout << LONG_TAB << " "
+		"(" << COLOR_YELLOW << "1" << COLOR_RESET << ")" <<
+		ACCOUNT_COLOR[user->usedAccount[0]] << " Account 1" << COLOR_RESET <<
+		"           ";
+	cout <<
+		"(" << COLOR_YELLOW << "2" << COLOR_RESET << ")" <<
+		ACCOUNT_COLOR[user->usedAccount[1]] << " Account 2" << COLOR_RESET <<
+		"           ";
+	cout <<
+		"(" << COLOR_YELLOW << "3" << COLOR_RESET << ")" <<
+		ACCOUNT_COLOR[user->usedAccount[2]] << " Account 3" << COLOR_RESET <<
+		endl;
+
+	cout << LONG_TAB << "\t           " <<
+		"(" << COLOR_YELLOW << "4" << COLOR_RESET << ")" <<
+		ACCOUNT_COLOR[user->usedAccount[3]] << " Account 4" << COLOR_RESET <<
+		"           ";
+	cout <<
+		"(" << COLOR_YELLOW << "5" << COLOR_RESET << ")" <<
+		ACCOUNT_COLOR[user->usedAccount[4]] << " Account 5" << COLOR_RESET <<
+		endl;
+}
+
+void displayChooseResumeAccountScreen(User* user, bool resumeAvailable) {
+	displayLobby(resumeAvailable);
+
+	cout << LONG_TAB << "\t            " <<
+		"Welcome back " << COLOR_ORANGE << user->name << COLOR_RESET << endl;
+	cout << LONG_TAB << "\t            " <<
+		"Which account do you want to play?" << endl;
+	cout << endl;
+
+	displayAccounts(user);
+
+	cout << LONG_TAB << "\t                        " <<
+		"(" << COLOR_YELLOW << "G" << COLOR_RESET << ")" <<
+		COLOR_YELLOW << " New game" << COLOR_RESET << endl;
+
+	cout << endl;
 }
 
 void displayGridBorder(GameBoard* board, char c) {
@@ -85,7 +133,7 @@ void displayScore(GameBoard* board, User* user) {
 	cout << endl;
 }
 
-void displayInstruction(States* states) {
+void displayMovementInstruction(States* states) {
 	cout << "Use your " << COLOR_GREEN << "arrow keys " << COLOR_RESET << "to move the tiles." << endl;
 	if (states->activePrev) cout << "Undo:      " << COLOR_YELLOW << "U" << COLOR_RESET << "     ";
 	if (states->activeNext) cout << "Redo:         " << COLOR_YELLOW << "R" << COLOR_RESET << endl;
@@ -105,7 +153,7 @@ void displayGrid(GameBoard* board) {
 	displayGridBorder(board, '-');
 
 	for (int i = 0; i < width; i++) {
-		if (width < 6) displayEmptyRow(board, i);
+		if (width < 5) displayEmptyRow(board, i);
 
 		// display row with value of the tiles
 		cout << "|";
@@ -127,7 +175,7 @@ void displayGrid(GameBoard* board) {
 		}
 		cout << endl;
 
-		if (width < 6) displayEmptyRow(board, i);
+		if (width < 5) displayEmptyRow(board, i);
 
 		displayGridBorder(board, '-');
 	}
@@ -135,7 +183,7 @@ void displayGrid(GameBoard* board) {
 	cout << endl;
 }
 
-void displayMainScreen(GameBoard* board, States* states, User* user) {
+void displayGamePlayScreen(GameBoard* board, States* states, User* user) {
 	// clear screen
 	system("CLS");
 
@@ -146,7 +194,7 @@ void displayMainScreen(GameBoard* board, States* states, User* user) {
 	displayGrid(board);
 
 	// display instruction
-	displayInstruction(states);
+	displayMovementInstruction(states);
 
 	cout << endl;
 }

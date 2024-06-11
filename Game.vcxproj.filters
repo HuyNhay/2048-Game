@@ -73,22 +73,85 @@
     <None Include=".gitignore">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Board.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="NextStates.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="PreviousStates.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="StatesActive.bin">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="User.bin">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Ranks.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Board1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="StatesActive1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="User1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="NextStates1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="PreviousStates1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="NextStates5.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="User5.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Board2.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="NextStates2.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="PreviousStates2.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="StatesActive2.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="User2.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="StatesActive5.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="PreviousStates5.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Board4.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="StatesActive4.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="User4.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Board3.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="PreviousStates3.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="StatesActive3.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="User3.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="NextStates3.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Board5.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="NextStates4.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="PreviousStates4.bin">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

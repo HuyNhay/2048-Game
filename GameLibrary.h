@@ -16,7 +16,7 @@
 #define COLOR_BLUE "\033[34m" 
 #define COLOR_MAGENTA "\033[35m" 
 #define COLOR_CYAN "\033[36m" 
-#define COLOR_ORANGE "\033[38;2;242;177;121m"
+#define COLOR_ORANGE "\033[38;2;245;150;100m"
 #define COLOR_RESET "\033[0m" 
 
 using namespace std;
@@ -42,15 +42,19 @@ const char KEY_M = 'm';
 const char KEY_1 = '1';
 const char KEY_2 = '2';
 const char KEY_3 = '3';
+const char KEY_4 = '4';
+const char KEY_5 = '5';
 const int CONTINUE = 111;
 const int LOBBY = 222;
 const int EXIT = 333;
+const int NEW_GAME = 444;
 const int CELL_LENGTH = 7;
 const int NAME_LENGTH = 23;
 const int SCORE_LENGTH = 16;
 const int R = 12;
 const int C = 13;
 const int WIN_VALUE = 11;
+const int NUM_ACCOUNT = 5;
 const char ZERO[R][C] = {
 	"************",
 	"************",
@@ -166,15 +170,24 @@ const char RANK_COLOR[][20] = {
 	"\033[38;2;180;58;135m",
 
 };
+const char ACCOUNT_COLOR[][20] = {
+	"",
+	"\033[32m"
+};
 
 // User
 struct User {
+	// vital information
 	string name;
 	int bestScore;
+	bool usedAccount[5];
+
+	// other information
 	bool continuePlay;
 	high_resolution_clock::time_point startTime;
 	int addedTime;
 	int playTime;
+	int resumeAccount;
 
 	User();
 
@@ -252,7 +265,7 @@ struct List : ListBase<T> {
 // Rankings
 template <>
 struct List<Player> : ListBase<Player> {
-	void removePlayer(User);
+	bool removePlayer(User);
 	void addPlayer(User);
 	void update(User);
 	void saveToFile();
@@ -297,7 +310,7 @@ void clearStates(Stack<GameBoard*>&);
 
 // Lobby
 void processLobby(GameBoard*, User*, States*, List<Player>*);
-bool processEnterPlayerName(User*, List<Player>*);
+int processEnterPlayerName(User*, List<Player>*);
 bool checkNameExistence(List<Player>*, string);
 void removeSpaces(string&);
 void processSettings(GameBoard*, States*);
@@ -305,17 +318,23 @@ void processChangeGridSizesLobby(GameBoard*, States*);
 void processChangeGameMode(GameBoard*, States*);
 void changeGameMode(States*, int);
 bool processResume(GameBoard*, States*, User*, bool);
+int processChooseResumeAccount(GameBoard*, User*, bool);
 
 // Resume
 void saveResumeGame(GameBoard*, States*, User*);
 void saveUser(User*);
-void saveStates(States*);
-void saveGameBoard(GameBoard*);
-void loadUser(User*);
-void loadStatesActiveStatus(States*);
-void loadGameBoard(GameBoard*);
-void loadPrevStates(States*);
-void loadNextStates(States*);
+void saveUserVitalInformation(User*);
+void saveUserOtherInformation(User*);
+void saveStates(States*, User*);
+void saveGameBoard(GameBoard*, User*);
+void loadResumeGame(GameBoard*, States*, User*);
+void loadUserVitalInformation(User*);
+void loadUserOtherInformation(User*);
+void loadStatesActiveStatus(States*, User*);
+void loadGameBoard(GameBoard*, User*);
+void loadPrevStates(States*, User*);
+void loadNextStates(States*, User*);
+void clearResumeGame(int);
 
 // Grid
 void changeGridSizes(GameBoard*, int, int);
@@ -326,14 +345,19 @@ bool maximize(int&, const int&);
 void clearMemory(GameBoard*);
 
 // Display
+void displayLobbyBanner();
+void displayLobbyInstruction(bool);
 void displayLobby(bool);
 void displaySettings(GameBoard*, States*);
+void displayAccounts(User*);
+void displayChooseResumeAccountScreen(User*, bool);
+
 void displayGridBorder(GameBoard*, char);
 void displayEmptyRow(GameBoard*, int);
 void displayScore(GameBoard*, User*);
 void displayGrid(GameBoard*);
-void displayInstruction(States*);
-void displayMainScreen(GameBoard*, States*, User*);
+void displayMovementInstruction(States*);
+void displayGamePlayScreen(GameBoard*, States*, User*);
 void displayVictoryScreen(GameBoard*, States*, List<Player>*, User*);
 void displayLossScreen(GameBoard*, States*, User*);
 void displayRankings(List<Player>*, User*);

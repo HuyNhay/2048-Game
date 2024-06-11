@@ -149,12 +149,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-    <None Include="Board.bin" />
-    <None Include="NextStates.bin" />
-    <None Include="PreviousStates.bin" />
+    <None Include="Board1.bin" />
+    <None Include="Board2.bin" />
+    <None Include="Board3.bin" />
+    <None Include="Board4.bin" />
+    <None Include="Board5.bin" />
+    <None Include="NextStates1.bin" />
+    <None Include="NextStates2.bin" />
+    <None Include="NextStates3.bin" />
+    <None Include="NextStates4.bin" />
+    <None Include="NextStates5.bin" />
+    <None Include="PreviousStates1.bin" />
+    <None Include="PreviousStates2.bin" />
+    <None Include="PreviousStates3.bin" />
+    <None Include="PreviousStates4.bin" />
+    <None Include="PreviousStates5.bin" />
     <None Include="Ranks.bin" />
-    <None Include="StatesActive.bin" />
+    <None Include="StatesActive1.bin" />
+    <None Include="StatesActive2.bin" />
+    <None Include="StatesActive3.bin" />
+    <None Include="StatesActive4.bin" />
+    <None Include="StatesActive5.bin" />
     <None Include="User.bin" />
+    <None Include="User1.bin" />
+    <None Include="User2.bin" />
+    <None Include="User3.bin" />
+    <None Include="User4.bin" />
+    <None Include="User5.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

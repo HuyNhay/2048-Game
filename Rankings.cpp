@@ -1,6 +1,7 @@
 #include "GameLibrary.h"
 
-void List<Player>::removePlayer(User user) {
+bool List<Player>::removePlayer(User user) {
+	bool isExist = false;
 	Node<Player>* curNode = head;
 	for (
 		int i = 0;
@@ -8,10 +9,14 @@ void List<Player>::removePlayer(User user) {
 		curNode = curNode->next, i++
 		) {
 		if (curNode->data.name == user.name) {
-			removePos(i);
-			return;
+			isExist = true;
+			if (curNode->data.bestScore < user.bestScore) {
+				removePos(i);
+				return true;
+			}
 		}
 	}
+	return !isExist;
 }
 
 void List<Player>::addPlayer(User user) {
@@ -38,8 +43,7 @@ void List<Player>::addPlayer(User user) {
 }
 
 void List<Player>::update(User user) {
-	removePlayer(user);
-	addPlayer(user);
+	if (removePlayer(user))	addPlayer(user);
 	while (size > 20) {
 		removePos(size - 1);
 	}

@@ -32,7 +32,7 @@ void initGrid(GameBoard* board, States* states, User* user) {
 	addRandomTile(board);
 	addRandomTile(board);
 
-	displayMainScreen(board, states, user);
+	displayGamePlayScreen(board, states, user);
 }
 
 void addRandomTile(GameBoard* board) {
