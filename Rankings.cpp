@@ -50,17 +50,16 @@ void List<Player>::update(User user) {
 }
 
 void List<Player>::saveToFile() {
-	ofstream output("Ranks.bin", ios::binary);
-	output.write((char*)&size, sizeof(int));
+	Encrypter encrypter("Ranks.bin");
+
+	encrypter.writeInt(size);
 	for (
 		Node<Player>* curNode = head;
 		curNode != nullptr;
 		curNode = curNode->next
 		) {
-		saveRankPlayer(output, curNode->data);
+		saveRankPlayer(encrypter, curNode->data);
 	}
-	output.close();
-
 }
 
 bool List<Player>::isEmpty() const {
@@ -68,36 +67,27 @@ bool List<Player>::isEmpty() const {
 }
 
 void loadRankings(List<Player>* rankings) {
-	ifstream input("Ranks.bin", ios::binary);
-	if (!input.is_open()) {
+	Decrypter decrypter("Ranks.bin");
+
+	if (!decrypter.input.is_open()) {
 		return;
 	}
 
 	// read number of players
-	int numPlayer = 0;
-	input.read((char*)&numPlayer, sizeof(int));
+	int numPlayer = decrypter.readInt();
 
-	int nameLength = 0;
 	string name = "";
 	int score = 0;
 	int playTime = 0;
-	char* buffer = nullptr;
 
 	while (numPlayer--) {
-		// read name's length
-		input.read((char*)&nameLength, sizeof(int));
-
 		// read name
-		buffer = new char[nameLength];
-		input.read(buffer, nameLength);
-		name = "";
-		name.append(buffer, nameLength);
-		delete[] buffer;
+		name = decrypter.readString();
 
 		// read score and time
-		input.read((char*)&score, sizeof(int));
-		input.read((char*)&playTime, sizeof(int));
-
+		score = decrypter.readInt();
+		playTime = decrypter.readInt();
+		
 		// add new player
 		rankings->addTail(new Node<Player>(Player(name, score, playTime)));
 	}

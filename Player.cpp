@@ -30,13 +30,11 @@ void Player::operator=(const Player& other) {
 	playTime = other.playTime;
 }
 
-void saveRankPlayer(ofstream& output, Player player) {
+void saveRankPlayer(Encrypter& encrypter, Player player) {
 	// write name
-	int nameLength = (int)player.name.length();
-	output.write((char*)&nameLength, sizeof(int));
-	output.write(player.name.c_str(), nameLength);
+	encrypter.writeString(player.name);
 
 	// write best score and time
-	output.write((char*)&player.bestScore, sizeof(int));
-	output.write((char*)&player.playTime, sizeof(int));
+	encrypter.writeInt(player.bestScore);
+	encrypter.writeInt(player.playTime);
 }

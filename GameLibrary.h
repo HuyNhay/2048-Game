@@ -55,6 +55,9 @@ const int R = 12;
 const int C = 13;
 const int WIN_VALUE = 11;
 const int NUM_ACCOUNT = 5;
+const int PUBLIC_KEY_E = 65537;
+const int PUBLIC_KEY_N = 99291707;
+const int PRIVATE_KEY = 5121233;
 const char ZERO[R][C] = {
 	"************",
 	"************",
@@ -175,6 +178,68 @@ const char ACCOUNT_COLOR[][20] = {
 	"\033[32m"
 };
 
+struct Encrypter {
+	struct PublicKey {
+		int e;
+		int n;
+
+		PublicKey();
+
+		~PublicKey();
+	} key;
+	ofstream output;
+
+	Encrypter(string);
+
+	~Encrypter();
+
+	void openFile(string);
+
+	int power(int, int) const;
+
+	int encrypt(int) const;
+
+	void writeInt(int);
+
+	void writeChar(char);
+
+	void writeBool(bool);
+
+	void writeBoolArray(bool*, int);
+
+	void writeString(string);
+};
+
+struct Decrypter {
+	struct PrivateKey {
+		int d;
+		int n;
+
+		PrivateKey();
+
+		~PrivateKey();
+	} key;
+	ifstream input;
+
+	Decrypter(string);
+
+	~Decrypter();
+
+	int power(int, int) const;
+
+	int decrypt(int) const;
+
+	int readInt();
+
+	char readChar();
+
+	bool readBool();
+
+	string readString();
+
+	void readBoolArray(bool*, int);
+};
+
 // User
 struct User {
 	// vital information
@@ -241,7 +306,7 @@ struct Player {
 
 	void operator=(const Player&);
 };
-void saveRankPlayer(ofstream&, Player);
+void saveRankPlayer(Encrypter&, Player);
 
 // Linked List
 template <typename T>
@@ -311,6 +376,7 @@ void clearStates(Stack<GameBoard*>&);
 // Lobby
 void processLobby(GameBoard*, User*, States*, List<Player>*);
 int processEnterPlayerName(User*, List<Player>*);
+bool checkInvalidCharacter(string);
 bool checkNameExistence(List<Player>*, string);
 void removeSpaces(string&);
 void processSettings(GameBoard*, States*);
