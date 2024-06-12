@@ -10,7 +10,7 @@ int processEnterPlayerName(User* user, List<Player>* rankings) {
 	cout << LONG_TAB << "\t       " << COLOR_YELLOW << "Nickname (any unnecessary " << COLOR_RESET << endl;
 	cout << LONG_TAB << "\t       " << COLOR_YELLOW << "spaces will be removed): " << COLOR_RESET;
 	
-	loadUserVitalInformation(user);
+	if (resumeEnable) loadUserVitalInformation(user);
 
 	string name = "";
 	cin >> ws; // remove all spaces in buffer
@@ -112,7 +112,12 @@ int processEnterPlayerName(User* user, List<Player>* rankings) {
 			}
 
 		}
-		else if ((int)name.length() > 20 || (int)name.length() == 0 || checkNameExistence(rankings, name)) { // invalid name
+		else if (
+			(int)name.length() > 20 || 
+			(int)name.length() == 0 || 
+			checkInvalidCharacter(name) ||
+			checkNameExistence(rankings, name)
+			) { // invalid name
 			if (ntry == 0) {
 				cout << endl << COLOR_RED << "Too much wrong attempts, exit game automatically!" << COLOR_RESET;
 				return EXIT;
@@ -122,6 +127,10 @@ int processEnterPlayerName(User* user, List<Player>* rankings) {
 			if ((int)name.length() > 20 || (int)name.length() == 0) {
 				cout << "\t\t\t    " <<
 					"Your nickname is invalid (NOT empty, NOT more than 20 characters) " << endl;
+			}
+			else if (checkInvalidCharacter(name)) {
+				cout << "\t\t\t    " <<
+					"Your nickname is invalid (ONLY contains letters, numbers and spaces) " << endl;
 			}
 			else {
 				cout << "\t\t\t\t    " <<
@@ -162,6 +171,7 @@ void processChangeGridSizesLobby(GameBoard* board, States* states) {
 			cout << " Pressed Y" << endl;
 			int w;
 			cout << COLOR_GREEN << " Enter number of rows: " << COLOR_RESET;
+			cin.clear();
 			while (true) {
 				cin >> w;
 				if (cin.fail() || w <= 0 || w > 10) {

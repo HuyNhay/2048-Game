@@ -128,6 +128,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Decrypter.cpp" />
+    <ClCompile Include="Encrypter.cpp" />
     <ClCompile Include="Deallocate.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="GameProcess.cpp" />
@@ -137,7 +139,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Name.cpp" />
     <ClCompile Include="Rankings.cpp" />
-    <ClCompile Include="Resume.cpp" />
+    <ClCompile Include="ResumeLoad.cpp" />
+    <ClCompile Include="ResumeSave.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="State.cpp" />
