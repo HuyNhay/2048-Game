@@ -1,3 +1,4 @@
+// Get latest version at https://github.com/HuyNhay/2048-Game
 #include "GameLibrary.h"
 
 using namespace std;
