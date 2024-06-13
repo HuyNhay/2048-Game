@@ -53,11 +53,11 @@ bool Decrypter::readBool() {
 	return (bool)(readInt() - 10);
 }
 string Decrypter::readString() {
-	// read len
-	int len = readInt();
+	// read string length
+	int length = readInt();
 
 	string data = "";
-	while (len--) {
+	while (length--) {
 		data += readChar();
 	}
 	return data;

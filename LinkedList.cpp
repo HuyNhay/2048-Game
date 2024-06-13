@@ -16,7 +16,8 @@ Node<T>::~Node() {
 	next = nullptr;
 }
 
-template struct Node<GameBoard*>; // explicit instantiate
+// explicit instantiate
+template struct Node<GameBoard*>; 
 template struct Node<Player>;
 
 template <typename T>
@@ -101,6 +102,7 @@ void ListBase<T>::removePos(int pos) {
 	size--;
 }
 
+// explicit instantiate
 template struct ListBase<GameBoard*>;
 template struct ListBase<Player>;
 

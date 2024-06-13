@@ -22,6 +22,7 @@
 using namespace std;
 using namespace std::chrono;
 
+// KEYBOARD
 const int KEY_UP = 72;
 const int KEY_DOWN = 80;
 const int KEY_LEFT = 75;
@@ -44,20 +45,38 @@ const char KEY_2 = '2';
 const char KEY_3 = '3';
 const char KEY_4 = '4';
 const char KEY_5 = '5';
+
+// RETURN CODE
 const int CONTINUE = 111;
 const int LOBBY = 222;
 const int EXIT = 333;
 const int NEW_GAME = 444;
+
+// LENGTH
 const int CELL_LENGTH = 7;
 const int NAME_LENGTH = 23;
 const int SCORE_LENGTH = 16;
-const int R = 12;
-const int C = 13;
+const int NUM_LENGTH[] = {
+	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5
+};
+
+// VALUE OF TILES
+const int POW2[] = {
+	1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384
+};
 const int WIN_VALUE = 11;
+
+// NUMBER OF RESUME ACCOUNTS
 const int NUM_ACCOUNT = 5;
+
+// RSA KEY
 const int PUBLIC_KEY_E = 65537;
 const int PUBLIC_KEY_N = 99291707;
 const int PRIVATE_KEY = 5121233;
+
+// DECORATION STUFFS
+const int R = 12;
+const int C = 13;
 const char ZERO[R][C] = {
 	"************",
 	"************",
@@ -114,12 +133,6 @@ const char EIGHT[R][C] = {
 	"************",
 	"************"
 };
-const int POW2[] = {
-	1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 
-};
-const int NUM_LENGTH[] = {
-	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4
-};
 const char BG_COLOR[][20] = {
 	"",
 	"\033[48;2;238;228;218m",
@@ -171,72 +184,59 @@ const char RANK_COLOR[][20] = {
 	"\033[35m",
 	"\033[38;2;184;87;202m",
 	"\033[38;2;180;58;135m",
-
 };
 const char ACCOUNT_COLOR[][20] = {
 	"",
 	"\033[32m"
 };
 
+// Encrypter
 struct Encrypter {
 	struct PublicKey {
 		int e;
 		int n;
 
 		PublicKey();
-
 		~PublicKey();
 	} key;
 	ofstream output;
 
 	Encrypter(string);
-
 	~Encrypter();
 
 	void openFile(string);
 
 	int power(int, int) const;
-
 	int encrypt(int) const;
 
 	void writeInt(int);
-
 	void writeChar(char);
-
 	void writeBool(bool);
-
 	void writeBoolArray(bool*, int);
-
 	void writeString(string);
 };
 
+// Decrypter
 struct Decrypter {
 	struct PrivateKey {
 		int d;
 		int n;
 
 		PrivateKey();
-
 		~PrivateKey();
 	} key;
 	ifstream input;
 
 	Decrypter(string);
-
 	~Decrypter();
 
 	int power(int, int) const;
-
 	int decrypt(int) const;
 
 	int readInt();
-
 	char readChar();
-
 	bool readBool();
-
 	string readString();
-
 	void readBoolArray(bool*, int);
 };
 
@@ -255,11 +255,8 @@ struct User {
 	int resumeAccount;
 
 	User();
-
 	User(string, int, bool, int, int);
-
 	~User();
-
 	void operator=(const User&);
 };
 
@@ -273,7 +270,6 @@ struct GameBoard {
 	bool isWin;
 
 	GameBoard();
-
 	~GameBoard();
 };
 
@@ -284,9 +280,7 @@ struct Node {
 	Node<T>* next;
 
 	Node();
-
 	Node(T);
-
 	~Node();
 };
 
@@ -297,13 +291,9 @@ struct Player {
 	int playTime;
 
 	Player();
-
 	Player(string, int, int);
-
 	Player(const User&);
-
 	~Player();
-
 	void operator=(const Player&);
 };
 void saveRankPlayer(Encrypter&, Player);
@@ -426,6 +416,7 @@ void displayMovementInstruction(States*);
 void displayGamePlayScreen(GameBoard*, States*, User*);
 void displayVictoryScreen(GameBoard*, States*, List<Player>*, User*);
 void displayLossScreen(GameBoard*, States*, User*);
+
 void displayRankings(List<Player>*, User*);
 
 // Game Play

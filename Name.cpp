@@ -44,8 +44,6 @@ bool checkInvalidCharacter(string name) {
         if (c >= 'a' && c <= 'z') continue;
         if (c >= 'A' && c <= 'Z') continue;
         if (c >= '1' && c <= '9') continue;
-        //cout << c << endl;
-        //system("pause");
         return true;
     }
     return false;

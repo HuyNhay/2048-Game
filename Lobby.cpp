@@ -299,8 +299,8 @@ void processSettings(GameBoard* board, States* states) {
 	}
 }
 
-int processChooseResumeAccount(GameBoard* board, User* user, bool resumeAvailable) {
-	displayChooseResumeAccountScreen(user, resumeAvailable);
+int processChooseResumeAccount(GameBoard* board, User* user, bool resumeEnable) {
+	displayChooseResumeAccountScreen(user, resumeEnable);
 
 	int userChoice = 0;
 	while (true) {
@@ -313,7 +313,7 @@ int processChooseResumeAccount(GameBoard* board, User* user, bool resumeAvailabl
 			int account = userChoice - '1';
 
 			if (!user->usedAccount[account]) {
-				displayChooseResumeAccountScreen(user, resumeAvailable);
+				displayChooseResumeAccountScreen(user, resumeEnable);
 				cout << LONG_TAB << " " <<
 					"Pressed " << COLOR_YELLOW << account + 1 << COLOR_RESET <<
 					", this account hasn't been used" << endl;
@@ -333,7 +333,7 @@ int processChooseResumeAccount(GameBoard* board, User* user, bool resumeAvailabl
 						return NEW_GAME;
 					case KEY_N:
 						running = false;
-						displayChooseResumeAccountScreen(user, resumeAvailable);
+						displayChooseResumeAccountScreen(user, resumeEnable);
 						cout << LONG_TAB << "\t            " << "Pressed N" << endl;
 						break;
 					}
@@ -347,7 +347,7 @@ int processChooseResumeAccount(GameBoard* board, User* user, bool resumeAvailabl
 		}
 
 		case KEY_G:
-			displayLobby(resumeAvailable);
+			displayLobby(resumeEnable);
 
 			cout << LONG_TAB << " " <<
 				"Pressed G, do you want to start a new game?" << endl;
@@ -360,7 +360,7 @@ int processChooseResumeAccount(GameBoard* board, User* user, bool resumeAvailabl
 			while (running1) {
 				switch (userDecision = _getch()) {
 				case KEY_Y: {
-					displayLobby(resumeAvailable);
+					displayLobby(resumeEnable);
 					cout << LONG_TAB << " " <<
 						"Pressed Y, choose an account to save the game" <<
 						endl << endl;
@@ -401,7 +401,7 @@ int processChooseResumeAccount(GameBoard* board, User* user, bool resumeAvailabl
 										running3 = false;
 										running2 = false;
 										running1 = false;
-										displayChooseResumeAccountScreen(user, resumeAvailable);
+										displayChooseResumeAccountScreen(user, resumeEnable);
 										cout << LONG_TAB << "\t            " << "Pressed N" << endl;
 										break;
 									}
@@ -420,7 +420,7 @@ int processChooseResumeAccount(GameBoard* board, User* user, bool resumeAvailabl
 
 				case KEY_N:
 					running1 = false;
-					displayChooseResumeAccountScreen(user, resumeAvailable);
+					displayChooseResumeAccountScreen(user, resumeEnable);
 					cout << LONG_TAB << "\t            " << "Pressed N" << endl;
 					break;
 				}

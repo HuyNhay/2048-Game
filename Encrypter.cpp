@@ -66,8 +66,8 @@ void Encrypter::writeBoolArray(bool* data, int len) {
 
 void Encrypter::writeString(string data) {
 	// write data's length
-	int len = (int)data.length();
-	writeInt(len);
+	int length = (int)data.length();
+	writeInt(length);
 	for (char c : data) {
 		writeChar(c);
 	}

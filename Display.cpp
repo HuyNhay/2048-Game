@@ -25,7 +25,7 @@ void displayLobbyBanner() {
 	}
 
 	cout << endl;
-	cout << LONG_TAB << LONG_TAB << "\t\t\t\t" << "--- Remade By HUYDEPTRAIVKL ---";
+	cout << LONG_TAB << LONG_TAB << "\t\t\t\t   " << "--- Remade By HUYDEPTRAI ---";
 	cout << endl << endl;
 }
 
