@@ -47,8 +47,8 @@ void loadStatesActiveStatus(States* states, User* user) {
 		return;
 	}
 	
-	states->activePrev = decrypter.readInt();
-	states->activeNext = decrypter.readInt();
+	states->activePrev = decrypter.readBool();
+	states->activeNext = decrypter.readBool();
 }
 
 void loadPrevStates(States* states, User* user) {
